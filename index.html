@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ridhwan — Notebook</title>
-<meta name="description" content="Ridhwan — a developer's notebook.">
+<meta name="description" content="Ridhwan — a developer's notebook. Software, scripts, and the notes in between.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Kalam:wght@400;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -24,6 +24,7 @@
     --mono: "JetBrains Mono", monospace;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
   html, body { background: var(--paper); color: var(--ink); }
   body {
     font-family: var(--note), system-ui, sans-serif;
@@ -33,6 +34,67 @@
   a { color: inherit; }
   main { position: relative; padding: 40px 16px 80px; }
 
+  /* ---------- preloader (inspo: create/develop/design) ---------- */
+  .preloader {
+    position: fixed; inset: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--paper);
+    animation: preloader-out 0.5s ease 1.4s forwards;
+  }
+  .preloader span {
+    font-family: var(--hand);
+    font-weight: 700;
+    font-size: clamp(28px, 5vw, 44px);
+    color: var(--ink-soft);
+    opacity: 0;
+    animation: word-in 1.2s ease 0.1s forwards;
+  }
+  .preloader span + span { margin-left: 14px; }
+  .preloader span:nth-child(2) { animation-delay: 0.35s; color: var(--margin); }
+  .preloader span:nth-child(3) { animation-delay: 0.6s; }
+  @keyframes word-in { to { opacity: 1; } }
+  @keyframes preloader-out {
+    to { opacity: 0; visibility: hidden; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .preloader { display: none; }
+  }
+
+  /* ---------- floating pill nav (inspo: fixed top nav) ---------- */
+  .float-nav {
+    position: fixed; top: 20px; left: 50%;
+    transform: translate(-50%, -100px);
+    z-index: 50;
+    display: flex; align-items: center; gap: 18px;
+    font-family: var(--hand);
+    font-size: 19px; font-weight: 700;
+    background: var(--paper-2);
+    border: 2px solid var(--ink);
+    border-radius: 999px;
+    padding: 8px 22px;
+    box-shadow: 3px 4px 0 var(--ink-soft), 0 12px 30px -12px rgba(20,17,13,0.4);
+    transition: transform 0.35s cubic-bezier(0.65, 0.05, 0.36, 1);
+  }
+  .float-nav.visible { transform: translate(-50%, 0) rotate(-0.3deg); }
+  .float-nav a {
+    position: relative;
+    text-decoration: none;
+    color: var(--ink-soft);
+    padding: 0 2px;
+  }
+  .float-nav a:hover { color: var(--margin); }
+  .float-nav a::after {
+    content: "";
+    position: absolute; left: 0; right: 0; bottom: -2px;
+    height: 2px; background: var(--margin);
+    transform: scaleX(0);
+    transform-origin: bottom right;
+    transition: transform 0.3s cubic-bezier(0.65, 0.05, 0.36, 1);
+  }
+  .float-nav a:hover::after { transform: scaleX(1); transform-origin: bottom left; }
+  .float-nav .pin { color: var(--margin); font-size: 16px; }
+
+  /* ---------- notebook page ---------- */
   .page {
     position: relative;
     margin: 0 auto;
@@ -100,6 +162,7 @@
   }
   .meta { font-size: 16px; color: var(--muted); margin-top: 8px; }
 
+  /* ---------- in-page menu box ---------- */
   .menu-box {
     position: relative;
     display: block;
@@ -134,13 +197,23 @@
   }
   .menu-links .dot { color: var(--muted); margin: 0 4px; user-select: none; }
   .menu-link {
+    position: relative;
     display: inline-block;
     color: var(--ink-soft);
     text-decoration: none;
     padding: 0 4px;
-    transition: transform 0.12s, color 0.12s;
+    transition: color 0.12s;
   }
-  .menu-link:hover { color: var(--margin); transform: rotate(-1.5deg); }
+  .menu-link::after {
+    content: "";
+    position: absolute; left: 2px; right: 2px; bottom: 0;
+    height: 2px; background: var(--margin);
+    transform: scaleX(0);
+    transform-origin: bottom right;
+    transition: transform 0.3s cubic-bezier(0.65, 0.05, 0.36, 1);
+  }
+  .menu-link:hover { color: var(--margin); }
+  .menu-link:hover::after { transform: scaleX(1); transform-origin: bottom left; }
   .menu-link-active {
     display: inline-block;
     color: var(--ink);
@@ -200,6 +273,110 @@
     border-bottom: 2px solid var(--margin);
   }
 
+  /* ---------- what I do cards (inspo: service wobble cards) ---------- */
+  .cards {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 18px;
+    margin: 14px 0 16px;
+  }
+  @media (min-width: 640px) { .cards { grid-template-columns: repeat(3, 1fr); } }
+  .card {
+    border: 2px solid var(--ink);
+    border-radius: 12px;
+    background: rgba(255,255,255,0.4);
+    box-shadow: 2px 3px 0 var(--ink-soft);
+    padding: 18px 16px;
+    text-align: center;
+    transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
+  }
+  .card:nth-child(1) { transform: rotate(-0.5deg); }
+  .card:nth-child(2) { transform: rotate(0.4deg); }
+  .card:nth-child(3) { transform: rotate(-0.3deg); }
+  .card:hover {
+    transform: rotate(0deg) translateY(-4px) scale(1.02);
+    box-shadow: 4px 6px 0 var(--ink-soft);
+  }
+  .card .icon { font-size: 34px; line-height: 1; }
+  .card h3 {
+    font-family: var(--hand);
+    font-weight: 700;
+    font-size: 26px;
+    margin: 10px 0 6px;
+  }
+  .card:hover h3 { color: var(--margin); }
+  .card p {
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--ink-soft);
+  }
+
+  /* ---------- tech stickers (inspo: tech stack badges) ---------- */
+  .stickers {
+    display: flex; flex-wrap: wrap;
+    gap: 18px 22px;
+    margin: 16px 0 8px;
+  }
+  .sticker { text-align: center; }
+  .sticker .disc {
+    width: 72px; height: 72px;
+    border-radius: 50%;
+    border: 2px solid var(--ink);
+    background: #fff;
+    box-shadow: 2px 3px 0 var(--ink-soft);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--mono);
+    font-weight: 700;
+    font-size: 19px;
+    margin: 0 auto;
+    transition: transform 0.15s ease-out;
+  }
+  .sticker:nth-child(odd) .disc { transform: rotate(-2deg); }
+  .sticker:nth-child(even) .disc { transform: rotate(2deg); }
+  .sticker:hover .disc { transform: rotate(0deg) scale(1.08); border-color: var(--margin); color: var(--margin); }
+  .sticker .name {
+    font-family: var(--note);
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--muted);
+    margin-top: 8px;
+  }
+
+  /* ---------- projects ---------- */
+  .project {
+    border: 2px solid var(--ink);
+    border-radius: 12px;
+    background: rgba(255,255,255,0.4);
+    box-shadow: 2px 3px 0 var(--ink-soft);
+    padding: 16px 18px;
+    margin: 14px 0;
+    transform: rotate(-0.25deg);
+    transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
+  }
+  .project:hover {
+    transform: rotate(0deg) translateY(-3px);
+    box-shadow: 4px 6px 0 var(--ink-soft);
+  }
+  .project h3 { font-family: var(--hand); font-size: 26px; font-weight: 700; }
+  .project h3 a { text-decoration: none; }
+  .project h3 a:hover { color: var(--margin); }
+  .project p { font-size: 15px; line-height: 1.7; color: var(--ink-soft); margin-top: 4px; }
+  .project .tags { margin-top: 8px; }
+  .project-empty {
+    border: 2px dashed var(--muted);
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin: 14px 0;
+    color: var(--muted);
+    font-family: var(--hand);
+    font-size: 22px;
+    text-align: center;
+    transform: rotate(0.3deg);
+    background: transparent;
+  }
+
   .pill-row { margin: 6px 0; }
   .pill {
     display: inline-block;
@@ -242,10 +419,39 @@
     margin-top: 40px;
     transform: rotate(-0.5deg);
   }
+
+  /* ---------- scroll reveal (inspo: AOS fade-up) ---------- */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .reveal.in {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+    html { scroll-behavior: auto; }
+  }
 </style>
 </head>
 <body>
-<main>
+
+<div class="preloader" aria-hidden="true">
+  <span>write.</span><span>build.</span><span>ship.</span>
+</div>
+
+<nav class="float-nav" id="floatNav" aria-label="floating menu">
+  <span class="pin">✎</span>
+  <a href="#top">home</a>
+  <a href="#about">about</a>
+  <a href="#skills">tinkering</a>
+  <a href="#projects">built</a>
+  <a href="#contact">hello</a>
+</nav>
+
+<main id="top">
   <article class="page">
     <span class="margin-line" aria-hidden="true"></span>
     <span class="punch-dots" aria-hidden="true"></span>
@@ -280,46 +486,114 @@
         <span class="dot">·</span>
         <a class="menu-link" href="#about">about</a>
         <span class="dot">·</span>
-        <a class="menu-link" href="#skills">what I tinker with</a>
+        <a class="menu-link" href="#whatido">what I do</a>
+        <span class="dot">·</span>
+        <a class="menu-link" href="#skills">tinkering</a>
+        <span class="dot">·</span>
+        <a class="menu-link" href="#projects">things I've built</a>
         <span class="dot">·</span>
         <a class="menu-link" href="#contact">say hello</a>
       </div>
     </nav>
 
-    <h2><span class="pen">✎</span>a quick hello</h2>
-    <div class="doodle-box note">
-      <div><span class="label">they call me</span><span>Ridhwan</span></div>
-      <div><span class="label">what I do</span><span>Software Developer</span></div>
-      <div><span class="label">found at</span><span>github.com/riddyridz</span></div>
-      <div><span class="label">my motto</span><span>ship small, ship often.</span></div>
+    <div class="reveal">
+      <h2><span class="pen">✎</span>a quick hello</h2>
+      <div class="doodle-box note">
+        <div><span class="label">they call me</span><span>Ridhwan</span></div>
+        <div><span class="label">what I do</span><span>Software Developer</span></div>
+        <div><span class="label">found at</span><span>github.com/riddyridz</span></div>
+        <div><span class="label">my motto</span><span>write. build. ship.</span></div>
+      </div>
     </div>
 
-    <h2 id="about"><span class="pen">✎</span>about</h2>
-    <div class="prose note">
-      <p>Hi — I'm Ridhwan. I build and maintain software, ranging from small
-      automation scripts to full applications. This little site is my notebook:
-      a page that starts out nearly blank and fills up as more gets shipped.</p>
-      <p>I like the part where a messy problem turns into a clean line of code,
-      and the quiet satisfaction of a script that just runs. Most of what I
-      make lives over on
-      <a href="https://github.com/riddyridz" target="_blank" rel="noopener">GitHub</a>
-      — the notes about it end up here.</p>
+    <div class="reveal">
+      <h2 id="about"><span class="pen">✎</span>about</h2>
+      <div class="prose note">
+        <p>Hi, I'm Ridhwan. I build and maintain software, ranging from small
+        automation scripts to full applications. This little site is my notebook:
+        a page that starts out nearly blank and fills up as more gets shipped.</p>
+        <p>I like the part where a messy problem turns into a clean line of code,
+        and the quiet satisfaction of a script that just runs. Most of what I
+        make lives over on
+        <a href="https://github.com/riddyridz" target="_blank" rel="noopener">GitHub</a>;
+        the notes about it end up here.</p>
+      </div>
     </div>
 
-    <h2 id="skills"><span class="pen">✎</span>what I tinker with</h2>
-    <div class="pill-row">
-      <span class="row-label note">languages</span><span class="pill hot tilt-1">JavaScript</span><span class="pill tilt-3">TypeScript</span><span class="pill tilt-2">Python</span><span class="pill tilt-3">Shell</span>
-    </div>
-    <div class="pill-row">
-      <span class="row-label note">tools</span><span class="pill tilt-1">Git &amp; GitHub</span><span class="pill tilt-2">Node.js</span><span class="pill hot tilt-3">Cloudflare</span>
+    <div class="reveal">
+      <h2 id="whatido"><span class="pen">✎</span>what I do</h2>
+      <div class="cards">
+        <div class="card">
+          <div class="icon">⌨️</div>
+          <h3>web development</h3>
+          <p>Building things for the web with JavaScript, TypeScript and Node.js,
+          from tiny pages like this one to full applications.</p>
+        </div>
+        <div class="card">
+          <div class="icon">⚙️</div>
+          <h3>automation</h3>
+          <p>Python and shell scripts that take a boring, repetitive job
+          and make it a one-liner. My favourite kind of magic.</p>
+        </div>
+        <div class="card">
+          <div class="icon">☁️</div>
+          <h3>shipping</h3>
+          <p>Getting things deployed and keeping them running.
+          Git, GitHub and Cloudflare do the heavy lifting.</p>
+        </div>
+      </div>
     </div>
 
-    <div class="sticky-note" id="contact">
-      say hello → <a href="https://github.com/riddyridz" target="_blank" rel="noopener" style="font-weight:700">@riddyridz</a> on GitHub ✎
+    <div class="reveal">
+      <h2 id="skills"><span class="pen">✎</span>my tech stack &amp; tools</h2>
+      <div class="stickers">
+        <div class="sticker"><div class="disc">JS</div><div class="name">JavaScript</div></div>
+        <div class="sticker"><div class="disc">TS</div><div class="name">TypeScript</div></div>
+        <div class="sticker"><div class="disc">PY</div><div class="name">Python</div></div>
+        <div class="sticker"><div class="disc">SH</div><div class="name">Shell</div></div>
+        <div class="sticker"><div class="disc">&gt;_</div><div class="name">Node.js</div></div>
+        <div class="sticker"><div class="disc">GH</div><div class="name">GitHub</div></div>
+        <div class="sticker"><div class="disc">CF</div><div class="name">Cloudflare</div></div>
+      </div>
+    </div>
+
+    <div class="reveal">
+      <h2 id="projects"><span class="pen">✎</span>things I've built</h2>
+      <div class="project">
+        <h3><a href="https://github.com/riddyridz/riddyridz.github.io" target="_blank" rel="noopener">this notebook ↗</a></h3>
+        <p>The page you're reading: a single hand-styled HTML file served from
+        GitHub Pages at ridhwan.is-a.dev. No frameworks, just paper and ink.</p>
+        <div class="tags">
+          <span class="pill tilt-1">HTML</span><span class="pill tilt-2">CSS</span><span class="pill hot tilt-3">GitHub Pages</span>
+        </div>
+      </div>
+      <div class="project-empty">( next project gets pinned here — the glue is still drying ✎ )</div>
+    </div>
+
+    <div class="reveal">
+      <div class="sticky-note" id="contact">
+        say hello → <a href="https://github.com/riddyridz" target="_blank" rel="noopener" style="font-weight:700">@riddyridz</a> on GitHub ✎
+      </div>
     </div>
 
     <div class="end-of-page">~ end of page ~</div>
   </article>
 </main>
+
+<script>
+  // floating nav appears after scrolling past the hero
+  const nav = document.getElementById('floatNav');
+  addEventListener('scroll', () => {
+    nav.classList.toggle('visible', scrollY > 420);
+  }, { passive: true });
+
+  // scroll reveal
+  const io = new IntersectionObserver((entries) => {
+    for (const e of entries) {
+      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+    }
+  }, { rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
 </body>
 </html>
