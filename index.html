@@ -3,130 +3,323 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ridhwan</title>
+<title>Ridhwan — Notebook</title>
+<meta name="description" content="Ridhwan — a developer's notebook.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Kalam:wght@400;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #fafaf8;
-    --fg: #1a1a1a;
-    --muted: #6b6b6b;
-    --accent: #2b6cb0;
-    --border: #e2e2df;
+    --paper: #f5f1e8;
+    --paper-2: #f8f5ee;
+    --ink: #14110d;
+    --ink-soft: #302d28;
+    --muted: #575552;
+    --rule: #cfcdca;
+    --margin: #e40014;
+    --margin-soft: #c53637;
+    --punch: #b9b7b4;
+    --hand: "Caveat", cursive;
+    --note: "Kalam", cursive;
+    --mono: "JetBrains Mono", monospace;
   }
-  * { box-sizing: border-box; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--paper); color: var(--ink); }
   body {
-    margin: 0;
-    background: var(--bg);
-    color: var(--fg);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    line-height: 1.6;
+    font-family: var(--note), system-ui, sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
   }
-  main {
-    max-width: 640px;
+  a { color: inherit; }
+  main { position: relative; padding: 40px 16px 80px; }
+
+  .page {
+    position: relative;
     margin: 0 auto;
-    padding: 4rem 1.5rem 6rem;
+    max-width: 880px;
+    border-radius: 6px;
+    padding: 40px 20px 64px 64px;
+    background:
+      repeating-linear-gradient(to bottom,
+        transparent 0, transparent 31px,
+        var(--rule) 31px, var(--rule) 32px),
+      var(--paper-2);
+    background-position: 0 56px;
+    box-shadow:
+      0 1px 0 rgba(0,0,0,0.04),
+      0 20px 40px -20px rgba(20,17,13,0.35),
+      0 60px 80px -40px rgba(20,17,13,0.25);
   }
-  header h1 {
-    font-size: 1.75rem;
-    margin: 0 0 0.25rem;
+  .margin-line {
+    position: absolute; top: 0; bottom: 0; left: 44px;
+    width: 1.5px; background: var(--margin); opacity: 0.8;
   }
-  header p.tagline {
+  .punch-dots {
+    position: absolute; top: 0; bottom: 0; left: 10px;
+    width: 14px; opacity: 0.7;
+    background-image: radial-gradient(circle, var(--punch) 0 5px, transparent 6px);
+    background-position: 0 70px;
+    background-repeat: repeat-y;
+    background-size: 14px 110px;
+  }
+  .pushpin {
+    position: absolute; top: -12px; left: 50%;
+    transform: translateX(-50%); z-index: 20;
+    filter: drop-shadow(2px 4px 4px rgba(0,0,0,0.25));
+  }
+  @media (min-width: 640px) {
+    .page { padding: 56px 56px 80px 110px; }
+    .margin-line { left: 78px; }
+    .punch-dots { left: 28px; }
+  }
+
+  .handwritten { font-family: var(--hand); }
+  .note { font-family: var(--note); }
+  .tilt-1 { transform: rotate(-0.4deg); }
+  .tilt-2 { transform: rotate(0.5deg); }
+  .tilt-3 { transform: rotate(-0.8deg); }
+
+  h1 {
+    font-family: var(--hand);
+    font-weight: 700;
+    line-height: 1;
+    font-size: clamp(40px, 7vw, 64px);
+  }
+  h1 .underlined {
+    display: inline-block;
+    border-bottom: 3px solid var(--margin);
+    padding-bottom: 2px;
+    transform: rotate(-1deg);
+  }
+  .subtitle {
+    font-family: var(--hand);
+    font-size: 24px;
+    color: var(--margin-soft);
+    display: inline-block;
+    transform: rotate(-0.4deg);
+  }
+  .meta { font-size: 16px; color: var(--muted); margin-top: 8px; }
+
+  .menu-box {
+    position: relative;
+    display: block;
+    margin: 20px 0 28px;
+    border: 2px solid var(--ink);
+    border-radius: 10px;
+    padding: 14px 18px 12px;
+    background:
+      repeating-linear-gradient(135deg, rgba(228,0,20,0.04) 0 6px, transparent 6px 12px),
+      rgba(255,255,255,0.45);
+    box-shadow: 3px 4px 0 var(--ink-soft);
+    transform: rotate(-0.3deg);
+  }
+  .menu-tab {
+    position: absolute; top: -14px; left: 18px;
+    font-family: var(--hand);
+    font-size: 18px; font-weight: 700;
+    letter-spacing: 0.5px;
+    color: var(--margin);
+    background: var(--paper);
+    border: 1.5px dashed var(--margin-soft);
+    border-radius: 999px;
+    padding: 0 10px;
+    transform: rotate(-1deg);
+  }
+  .menu-links {
+    font-family: var(--hand);
+    font-size: 20px;
+    line-height: 1.4;
+    display: flex; flex-wrap: wrap; align-items: center;
+    column-gap: 8px; row-gap: 4px;
+  }
+  .menu-links .dot { color: var(--muted); margin: 0 4px; user-select: none; }
+  .menu-link {
+    display: inline-block;
+    color: var(--ink-soft);
+    text-decoration: none;
+    padding: 0 4px;
+    transition: transform 0.12s, color 0.12s;
+  }
+  .menu-link:hover { color: var(--margin); transform: rotate(-1.5deg); }
+  .menu-link-active {
+    display: inline-block;
+    color: var(--ink);
+    font-weight: 700;
+    padding: 0 6px;
+    position: relative;
+    background: linear-gradient(transparent 0 55%, rgba(255,230,100,0.7) 55% 92%, transparent 92%);
+  }
+  .menu-link-active::after {
+    content: "";
+    position: absolute; left: 4px; right: 4px; bottom: -2px;
+    height: 2px; background: var(--margin);
+    transform: rotate(-0.5deg);
+  }
+
+  h2 {
+    font-family: var(--hand);
+    font-weight: 700;
+    font-size: 30px;
+    display: inline-block;
+    margin: 28px 0 8px;
+    transform: rotate(-0.3deg);
+  }
+  @media (min-width: 768px) { h2 { font-size: 36px; } }
+  h2 .pen { color: var(--margin); margin-right: 4px; }
+
+  .doodle-box {
+    border: 2px solid var(--ink);
+    border-radius: 12px;
+    padding: 14px 18px;
+    background: rgba(255,255,255,0.35);
+    box-shadow: 2px 3px 0 var(--ink-soft);
+    transform: rotate(-0.25deg);
+    font-size: 17px;
+    line-height: 1.85;
+    color: var(--ink-soft);
+    margin-bottom: 16px;
+  }
+  .doodle-box .label, .row-label {
+    display: inline-block;
+    min-width: 110px;
+    color: var(--margin);
+    font-weight: 700;
+  }
+
+  .prose {
+    font-size: 17px;
+    line-height: 1.9;
+    color: var(--ink-soft);
+    margin-bottom: 16px;
+  }
+  .prose p + p { margin-top: 12px; }
+  .prose a {
+    font-weight: 700;
+    color: var(--margin);
+    text-decoration: none;
+    border-bottom: 2px solid var(--margin);
+  }
+
+  .pill-row { margin: 6px 0; }
+  .pill {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    border: 1.5px solid var(--ink);
+    border-radius: 999px;
+    background: var(--paper-2);
+    padding: 1px 10px;
+    margin: 3px 4px 3px 0;
+  }
+  .pill.hot { border-color: var(--margin); color: var(--margin); }
+
+  .sticky-note {
+    display: inline-block;
+    position: relative;
+    font-family: var(--hand);
+    font-size: 22px;
+    color: var(--ink);
+    background: #fff8b5;
+    padding: 14px 18px;
+    margin-top: 32px;
+    transform: rotate(2deg);
+    box-shadow: 3px 4px 12px rgba(0,0,0,0.15);
+  }
+  .sticky-note::before {
+    content: "";
+    position: absolute; top: -8px; left: 50%;
+    width: 70px; height: 16px;
+    background: rgba(228,0,20,0.25);
+    border: 1px dashed rgba(228,0,20,0.4);
+    transform: translateX(-50%) rotate(-3deg);
+  }
+
+  .end-of-page {
+    font-family: var(--hand);
+    font-size: 24px;
     color: var(--muted);
-    margin: 0 0 2rem;
+    text-align: right;
+    margin-top: 40px;
+    transform: rotate(-0.5deg);
   }
-  nav {
-    display: flex;
-    gap: 1rem;
-    font-size: 0.9rem;
-    margin-bottom: 2.5rem;
-    color: var(--muted);
-  }
-  nav a { color: var(--accent); text-decoration: none; }
-  nav a:hover { text-decoration: underline; }
-  section {
-    margin-bottom: 2.5rem;
-    padding-bottom: 2.5rem;
-    border-bottom: 1px solid var(--border);
-  }
-  section:last-of-type { border-bottom: none; }
-  section h2 {
-    font-size: 0.85rem;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--muted);
-    margin: 0 0 1rem;
-  }
-  .skills {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 1.5rem;
-  }
-  .skills h3 {
-    font-size: 0.9rem;
-    margin: 0 0 0.4rem;
-  }
-  .skills ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    color: var(--muted);
-    font-size: 0.9rem;
-  }
-  .skills li { margin-bottom: 0.2rem; }
-  footer {
-    color: var(--muted);
-    font-size: 0.85rem;
-  }
-  footer a { color: var(--accent); }
 </style>
 </head>
 <body>
 <main>
-  <header>
-    <h1>Ridhwan</h1>
-    <p class="tagline">Software developer.</p>
-    <nav>
-      <a href="#about">about</a>
-      <a href="#skills">skills</a>
-      <a href="#contact">contact</a>
+  <article class="page">
+    <span class="margin-line" aria-hidden="true"></span>
+    <span class="punch-dots" aria-hidden="true"></span>
+    <span class="pushpin" aria-hidden="true">
+      <svg width="34" height="34" viewBox="0 0 34 34" fill="none">
+        <defs>
+          <radialGradient id="pinHead" cx="0.35" cy="0.35" r="0.7">
+            <stop offset="0%" stop-color="#ff6470"/>
+            <stop offset="55%" stop-color="#e40014"/>
+            <stop offset="100%" stop-color="#7a000a"/>
+          </radialGradient>
+          <radialGradient id="pinShine" cx="0.3" cy="0.3" r="0.25">
+            <stop offset="0%" stop-color="rgba(255,255,255,0.85)"/>
+            <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+          </radialGradient>
+        </defs>
+        <ellipse cx="17" cy="22" rx="3" ry="1.2" fill="rgba(0,0,0,0.18)"/>
+        <circle cx="17" cy="14" r="9" fill="url(#pinHead)"/>
+        <circle cx="14" cy="11" r="3.2" fill="url(#pinShine)"/>
+        <rect x="16.2" y="20" width="1.6" height="9" rx="0.6" fill="#9a9a96"/>
+      </svg>
+    </span>
+
+    <h1>Ridh<span class="underlined">wan</span></h1>
+    <span class="subtitle">— a developer's notebook</span>
+    <div class="meta note">est. 2026 · page 01 of ∞</div>
+
+    <nav class="menu-box" aria-label="notebook menu">
+      <span class="menu-tab">✎ menu</span>
+      <div class="menu-links">
+        <span class="menu-link-active">home</span>
+        <span class="dot">·</span>
+        <a class="menu-link" href="#about">about</a>
+        <span class="dot">·</span>
+        <a class="menu-link" href="#skills">what I tinker with</a>
+        <span class="dot">·</span>
+        <a class="menu-link" href="#contact">say hello</a>
+      </div>
     </nav>
-  </header>
 
-  <section id="about">
-    <h2>About</h2>
-    <p>
-      I build and maintain software, ranging from small automation scripts
-      to full applications. This page is intentionally minimal — a starting
-      point that will grow as more gets shipped.
-    </p>
-  </section>
-
-  <section id="skills">
-    <h2>Skills</h2>
-    <div class="skills">
-      <div>
-        <h3>Languages</h3>
-        <ul>
-          <li>JavaScript / TypeScript</li>
-          <li>Python</li>
-          <li>Shell</li>
-        </ul>
-      </div>
-      <div>
-        <h3>Tools</h3>
-        <ul>
-          <li>Git &amp; GitHub</li>
-          <li>Node.js</li>
-          <li>Cloudflare</li>
-        </ul>
-      </div>
+    <h2><span class="pen">✎</span>a quick hello</h2>
+    <div class="doodle-box note">
+      <div><span class="label">they call me</span><span>Ridhwan</span></div>
+      <div><span class="label">what I do</span><span>Software Developer</span></div>
+      <div><span class="label">found at</span><span>github.com/riddyridz</span></div>
+      <div><span class="label">my motto</span><span>ship small, ship often.</span></div>
     </div>
-  </section>
 
-  <footer id="contact">
-    <p>
-      <a href="https://github.com/riddyridz">github.com/riddyridz</a>
-    </p>
-  </footer>
+    <h2 id="about"><span class="pen">✎</span>about</h2>
+    <div class="prose note">
+      <p>Hi — I'm Ridhwan. I build and maintain software, ranging from small
+      automation scripts to full applications. This little site is my notebook:
+      a page that starts out nearly blank and fills up as more gets shipped.</p>
+      <p>I like the part where a messy problem turns into a clean line of code,
+      and the quiet satisfaction of a script that just runs. Most of what I
+      make lives over on
+      <a href="https://github.com/riddyridz" target="_blank" rel="noopener">GitHub</a>
+      — the notes about it end up here.</p>
+    </div>
+
+    <h2 id="skills"><span class="pen">✎</span>what I tinker with</h2>
+    <div class="pill-row">
+      <span class="row-label note">languages</span><span class="pill hot tilt-1">JavaScript</span><span class="pill tilt-3">TypeScript</span><span class="pill tilt-2">Python</span><span class="pill tilt-3">Shell</span>
+    </div>
+    <div class="pill-row">
+      <span class="row-label note">tools</span><span class="pill tilt-1">Git &amp; GitHub</span><span class="pill tilt-2">Node.js</span><span class="pill hot tilt-3">Cloudflare</span>
+    </div>
+
+    <div class="sticky-note" id="contact">
+      say hello → <a href="https://github.com/riddyridz" target="_blank" rel="noopener" style="font-weight:700">@riddyridz</a> on GitHub ✎
+    </div>
+
+    <div class="end-of-page">~ end of page ~</div>
+  </article>
 </main>
 </body>
 </html>
