@@ -345,6 +345,108 @@
     color: var(--cyan);
   }
 
+  /* ---------- strengths ---------- */
+  .strengths-intro {
+    color: var(--muted);
+    font-weight: 300;
+    font-size: 16px;
+    max-width: 620px;
+    margin-bottom: 24px;
+  }
+  .strength-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  @media (min-width: 820px) { .strength-grid { grid-template-columns: 1fr 1fr; } }
+  .strength-card { position: relative; overflow: hidden; cursor: pointer; }
+  .strength-card::before {
+    content: "";
+    position: absolute; left: 0; top: 0; bottom: 0;
+    width: 3px;
+  }
+  .strength-card[data-accent="cyan"]::before   { background: var(--cyan); }
+  .strength-card[data-accent="green"]::before  { background: #34d399; }
+  .strength-card[data-accent="violet"]::before { background: var(--violet); }
+  .strength-card[data-accent="pink"]::before   { background: var(--pink); }
+  .s-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+  .s-instrument { font-family: "Lexend", var(--sans); font-weight: 600; font-size: 16.5px; }
+  .s-source {
+    font-size: 12.5px;
+    color: var(--muted);
+    margin-top: 3px;
+    line-height: 1.5;
+  }
+  .s-source a { color: var(--muted); text-decoration: underline; text-underline-offset: 2px; border: none; font-weight: 400; }
+  .s-source a:hover { color: var(--cyan); }
+  .s-toggle {
+    flex: 0 0 auto;
+    font-size: 20px;
+    font-weight: 300;
+    color: var(--muted);
+    line-height: 1;
+    padding: 2px 6px;
+    transition: transform 0.25s ease, color 0.25s ease;
+  }
+  .strength-card.open .s-toggle { transform: rotate(45deg); color: var(--fg); }
+  .s-headline { font-size: 15.5px; font-weight: 600; margin-top: 14px; }
+  .s-top5 {
+    list-style: none;
+    counter-reset: t5;
+    display: flex; flex-wrap: wrap; gap: 8px;
+    margin-top: 14px;
+  }
+  .s-top5 li {
+    counter-increment: t5;
+    font-size: 13.5px;
+    font-weight: 600;
+    border: 1px solid var(--card-border);
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 999px;
+    padding: 5px 13px 5px 8px;
+  }
+  .s-top5 li::before {
+    content: counter(t5);
+    font-family: "Lexend", var(--sans);
+    font-size: 11px;
+    color: #04131a;
+    background: var(--cyan);
+    border-radius: 999px;
+    padding: 1.5px 6.5px;
+    margin-right: 7px;
+  }
+  .s-bars { margin-top: 14px; display: grid; gap: 7px; }
+  .s-bar { display: flex; align-items: center; gap: 10px; font-size: 12.5px; }
+  .s-bar-name { flex: 0 0 104px; color: var(--muted); }
+  .s-bar-track {
+    flex: 1;
+    height: 7px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.07);
+    overflow: hidden;
+    display: block;
+  }
+  .s-bar-track span { display: block; height: 100%; border-radius: 999px; }
+  .s-bar-val { flex: 0 0 34px; text-align: right; color: var(--muted); }
+  .s-more {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.45s ease, opacity 0.35s ease, margin-top 0.35s ease;
+    margin-top: 0;
+  }
+  .s-more p { font-size: 14px; line-height: 1.7; color: var(--muted); font-weight: 300; }
+  .s-more p + p { margin-top: 8px; }
+  .s-more p strong { color: var(--fg); font-weight: 600; }
+  .strength-card.open .s-more { max-height: 460px; opacity: 1; margin-top: 14px; }
+  @media (hover: hover) {
+    .strength-card:hover .s-more { max-height: 460px; opacity: 1; margin-top: 14px; }
+    .strength-card:hover .s-toggle { transform: rotate(45deg); color: var(--fg); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .s-more, .s-toggle { transition: none; }
+  }
+
   /* ---------- certifications ---------- */
   .certs {
     display: grid;
@@ -733,31 +835,103 @@
   <section id="strengths" class="reveal">
     <div class="sec-label">04 · strengths</div>
     <h2 class="sec-title">How I'm wired</h2>
-    <div class="about-grid">
-      <div class="card">
-        <p><strong>CliftonStrengths top 5:</strong> Analytical · Relator ·
-        Responsibility · Deliberative · Belief.</p>
-        <p style="margin-top:10px">In practice: I search for reasons and causes,
-        take real ownership of what I commit to, think before I leap, and do my
-        best work when it lines up with something I believe in. People tend to
-        come to me to make the complicated feel simple.</p>
-        <p style="margin-top:10px"><strong>Strengths Profile:</strong> Equality
-        and fairness sit at the heart of it, alongside personal responsibility,
-        empathy, and a drive to build things that outlast me.</p>
-        <p style="margin-top:10px"><strong>Insights Discovery:</strong>
-        "Supporting Coordinator" — cool blue and earth green energy. The
-        dependable, quality-first kind: quiet behind-the-scenes delivery, high
-        standards, and doing the right thing in the right way, for a cause.</p>
+    <p class="strengths-intro">Four independent, professionally administered
+    assessments, taken between 2017 and 2022, that agree on the same picture.
+    Hover or tap a card for the detail.</p>
+
+    <div class="strength-grid">
+
+      <div class="card strength-card" data-accent="cyan" tabindex="0">
+        <div class="s-head">
+          <div>
+            <div class="s-instrument">CliftonStrengths&reg; Top 5</div>
+            <div class="s-source">Gallup · taken 2017 ·
+              <a href="https://www.gallup.com/cliftonstrengths" target="_blank" rel="noopener">about the assessment ↗</a></div>
+          </div>
+          <span class="s-toggle" aria-hidden="true">+</span>
+        </div>
+        <ol class="s-top5">
+          <li>Analytical</li><li>Relator</li><li>Responsibility</li><li>Deliberative</li><li>Belief</li>
+        </ol>
+        <div class="s-more">
+          <p><strong>Analytical</strong> — searches for reasons and causes; trusts
+          logic over guesswork when the stakes are high.</p>
+          <p><strong>Relator</strong> — known for reducing tangled processes to
+          their basic parts; people come to him for plainspoken explanations.</p>
+          <p><strong>Responsibility</strong> — takes psychological ownership of
+          anything he commits to; loyalty under pressure.</p>
+          <p><strong>Deliberative</strong> — careful, risk-aware decisions;
+          double-checks before shipping.</p>
+          <p><strong>Belief</strong> — does his best work when it lines up with
+          something he believes in.</p>
+        </div>
       </div>
-      <div class="card">
-        <ul class="fact-list">
-          <li><span class="k">type</span><span class="v">INFP — "The Mediator" (16personalities)</span></li>
-          <li><span class="k">insights</span><span class="v">Supporting Coordinator · blue-green energy</span></li>
-          <li><span class="k">realised</span><span class="v">Equality · Responsibility · Empathic · Legacy</span></li>
-          <li><span class="k">emerging</span><span class="v">Catalyst · Innovation · Optimism · Adventure</span></li>
-          <li><span class="k">in a word</span><span class="v">values-driven</span></li>
-        </ul>
+
+      <div class="card strength-card" data-accent="green" tabindex="0">
+        <div class="s-head">
+          <div>
+            <div class="s-instrument">Insights Discovery&reg;</div>
+            <div class="s-source">The Insights Group (Jungian colour model) · taken 2022 at GSK ·
+              <a href="https://www.insights.com/products/insights-discovery/" target="_blank" rel="noopener">about the assessment ↗</a></div>
+          </div>
+          <span class="s-toggle" aria-hidden="true">+</span>
+        </div>
+        <p class="s-headline">Type 52 — "Supporting Coordinator"</p>
+        <div class="s-bars" aria-label="colour energy scores">
+          <div class="s-bar"><span class="s-bar-name">Cool Blue</span><span class="s-bar-track"><span style="width:81%;background:#3b82f6"></span></span><span class="s-bar-val">81%</span></div>
+          <div class="s-bar"><span class="s-bar-name">Earth Green</span><span class="s-bar-track"><span style="width:83%;background:#22c55e"></span></span><span class="s-bar-val">83%</span></div>
+          <div class="s-bar"><span class="s-bar-name">Fiery Red</span><span class="s-bar-track"><span style="width:51%;background:#ef4444"></span></span><span class="s-bar-val">51%</span></div>
+          <div class="s-bar"><span class="s-bar-name">Sunshine Yellow</span><span class="s-bar-track"><span style="width:27%;background:#eab308"></span></span><span class="s-bar-val">27%</span></div>
+        </div>
+        <div class="s-more">
+          <p>The blue-green profile in practice: dependable, quality-first
+          delivery — "painstaking, conscientious, industrious". Excels at
+          maintenance and quality control, provides practical support quietly
+          and consistently, and is motivated by high standards, doing the right
+          thing in the right way, and working for a cause.</p>
+        </div>
       </div>
+
+      <div class="card strength-card" data-accent="violet" tabindex="0">
+        <div class="s-head">
+          <div>
+            <div class="s-instrument">Strengths Profile</div>
+            <div class="s-source">Cappfinity · taken 2019 ·
+              <a href="https://www.strengthsprofile.com" target="_blank" rel="noopener">about the assessment ↗</a></div>
+          </div>
+          <span class="s-toggle" aria-hidden="true">+</span>
+        </div>
+        <p class="s-headline">Realised strengths: Equality · Personal
+        Responsibility · Empathic · Legacy</p>
+        <div class="s-more">
+          <p>"Being fair and equitable is at the heart of who you are" — the
+          report's number-one finding. Alongside it: keeps every promise he
+          makes, tunes into how others feel, and wants to build things that
+          outlast him.</p>
+          <p><strong>Unrealised strengths</strong> (there when needed, room to
+          use more): Catalyst, Innovation, Optimism, Adventure, Bounceback,
+          Resilience, Persistence.</p>
+        </div>
+      </div>
+
+      <div class="card strength-card" data-accent="pink" tabindex="0">
+        <div class="s-head">
+          <div>
+            <div class="s-instrument">16Personalities</div>
+            <div class="s-source">NERIS Analytics (Jung/Myers-Briggs tradition) ·
+              <a href="https://www.16personalities.com/infp-personality" target="_blank" rel="noopener">about the type ↗</a></div>
+          </div>
+          <span class="s-toggle" aria-hidden="true">+</span>
+        </div>
+        <p class="s-headline">INFP — "The Mediator"</p>
+        <div class="s-more">
+          <p>The idealist of the type system: quietly principled, empathetic,
+          and motivated by meaning over status. Squares with the rest —
+          values-led work, genuine care for the people using what he builds,
+          and depth over noise.</p>
+        </div>
+      </div>
+
     </div>
   </section>
 
@@ -1129,6 +1303,18 @@
   sheet.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setOpen(false)));
   addEventListener('keydown', (e) => { if (e.key === 'Escape') setOpen(false); });
 })();
+
+// strength cards: tap (or Enter) toggles the detail; hover handles desktop via CSS
+document.querySelectorAll('.strength-card').forEach(card => {
+  function toggle(e) {
+    if (e.target.closest('a')) return; // let source links be links
+    card.classList.toggle('open');
+  }
+  card.addEventListener('click', toggle);
+  card.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(e); }
+  });
+});
 
 // scroll reveal
 const io = new IntersectionObserver((entries) => {
