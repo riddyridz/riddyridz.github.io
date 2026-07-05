@@ -356,6 +356,18 @@
   }
   footer a { color: var(--cyan); text-decoration: none; }
 
+  /* ---------- rocket easter egg ---------- */
+  #rocket {
+    position: fixed; left: 0; top: 0; z-index: 0;
+    font-size: 20px;
+    line-height: 1;
+    pointer-events: none;
+    user-select: none;
+    will-change: transform;
+    filter: drop-shadow(0 0 6px rgba(34, 211, 238, 0.35));
+  }
+  #rocket.boosting { filter: drop-shadow(0 0 14px rgba(251, 146, 60, 0.9)); }
+
   /* ---------- reveal ---------- */
   .reveal { opacity: 0; transform: translateY(26px); transition: opacity 0.6s ease, transform 0.6s ease; }
   .reveal.in { opacity: 1; transform: translateY(0); }
@@ -363,6 +375,7 @@
     .reveal { opacity: 1; transform: none; transition: none; }
     .scroll-hint { animation: none; }
     html { scroll-behavior: auto; }
+    #rocket { display: none; }
   }
 </style>
 </head>
@@ -371,6 +384,7 @@
 <canvas id="particles" aria-hidden="true"></canvas>
 <div class="nebula" aria-hidden="true"></div>
 <div class="grid-lines" aria-hidden="true"></div>
+<div id="rocket" aria-hidden="true">🚀</div>
 
 <nav class="nav" aria-label="main">
   <span class="brand">rh_</span>
@@ -388,8 +402,8 @@
     <div class="eyebrow">front-end developer · ui/ux designer</div>
     <h1>Ridhwan <span class="grad">Haque</span></h1>
     <p class="roles">
-      Head of Digital &amp; Technology at <strong>Darul Ihsaan</strong> ·
-      Digital Experience Officer at <strong>City St George's, University of London</strong>
+      Digital Experience Officer at <strong>City St George's, University of London</strong> ·
+      volunteer Head of Digital &amp; Technology at <strong>Darul Ihsaan</strong>
     </p>
     <div class="loc">📍 London, United Kingdom</div>
     <div class="cta-row">
@@ -410,9 +424,10 @@
         (WCAG 2.1 is a habit, not a checkbox), and human-centred — and I like
         owning the whole journey from UX research and design thinking through
         to polished product in production.</p>
-        <p>I lead digital and technology at <strong>Darul Ihsaan</strong>, and I
-        shape digital experiences at <strong>City St George's, University of
-        London</strong>. Behind that sits five years at
+        <p>I shape digital experiences at <strong>City St George's, University
+        of London</strong>, and volunteer as head of digital and technology at
+        <strong>Darul Ihsaan</strong>, a local non-profit close to my heart.
+        Behind that sits five years at
         <strong>GSK</strong> spanning product design, product management, and
         the global web estate; a platform I co-founded; freelance design work
         for community organisations; and a First Class BSc in Information
@@ -438,10 +453,10 @@
     <h2 class="sec-title">Where I've been</h2>
     <div class="timeline">
       <div class="t-item">
-        <div class="when">current</div>
+        <div class="when">current · voluntary</div>
         <h3>Head of Digital &amp; Technology · <span class="org">Darul Ihsaan</span></h3>
-        <p>Leading the digital and technology function for the mosque and
-        community hub: strategy, platforms, and the engineering behind them —
+        <p>Volunteer role at a local non-profit mosque and community hub:
+        leading digital strategy, platforms, and the engineering behind them —
         a relationship that started when I built their website as a freelancer
         in 2020.</p>
       </div>
@@ -544,10 +559,15 @@
         <p style="margin-top:10px"><strong>Strengths Profile:</strong> Equality
         and fairness sit at the heart of it, alongside personal responsibility,
         empathy, and a drive to build things that outlast me.</p>
+        <p style="margin-top:10px"><strong>Insights Discovery:</strong>
+        "Supporting Coordinator" — cool blue and earth green energy. The
+        dependable, quality-first kind: quiet behind-the-scenes delivery, high
+        standards, and doing the right thing in the right way, for a cause.</p>
       </div>
       <div class="card">
         <ul class="fact-list">
           <li><span class="k">type</span><span class="v">INFP — "The Mediator" (16personalities)</span></li>
+          <li><span class="k">insights</span><span class="v">Supporting Coordinator · blue-green energy</span></li>
           <li><span class="k">realised</span><span class="v">Equality · Responsibility · Empathic · Legacy</span></li>
           <li><span class="k">emerging</span><span class="v">Catalyst · Innovation · Optimism · Adventure</span></li>
           <li><span class="k">in a word</span><span class="v">values-driven</span></li>
@@ -619,7 +639,8 @@
 </div>
 
 <footer>
-  ridhwan.is-a.dev · hand-built, zero frameworks · <a href="https://github.com/riddyridz/riddyridz.github.io" target="_blank" rel="noopener">source</a>
+  ridhwan.is-a.dev · hand-built, zero frameworks · <a href="https://github.com/riddyridz/riddyridz.github.io" target="_blank" rel="noopener">source</a><br>
+  <span style="opacity:0.65">psst — arrow keys steer the rocket, spacebar for jet fuel 🚀</span>
 </footer>
 
 <script>
@@ -632,6 +653,12 @@
   const mouse = { x: -9999, y: -9999 };
   const LINK_DIST = 130;
   const MOUSE_DIST = 170;
+
+  // rocket easter egg: arrows steer, space = jet fuel
+  const rocketEl = document.getElementById('rocket');
+  const rocket = { x: 120, y: 160, angle: 0.4, boost: 0 };
+  const BASE_SPEED = 0.45;
+  const sparks = [];
 
   function size() {
     dpr = Math.min(devicePixelRatio || 1, 2);
@@ -710,6 +737,41 @@
       ctx.arc(a.x, a.y, a.r, 0, Math.PI * 2);
       ctx.fill();
     }
+
+    // rocket physics
+    const speed = BASE_SPEED + rocket.boost;
+    rocket.x += Math.cos(rocket.angle) * speed;
+    rocket.y += Math.sin(rocket.angle) * speed;
+    rocket.boost *= 0.975;
+    if (rocket.boost < 0.05) rocket.boost = 0;
+    if (rocket.x < -30) rocket.x = W + 30; else if (rocket.x > W + 30) rocket.x = -30;
+    if (rocket.y < -30) rocket.y = H + 30; else if (rocket.y > H + 30) rocket.y = -30;
+    rocketEl.style.transform =
+      `translate(${rocket.x}px, ${rocket.y}px) rotate(${rocket.angle + Math.PI / 4}rad)`;
+    rocketEl.classList.toggle('boosting', rocket.boost > 0.8);
+
+    // jet-fuel flame trail
+    if (rocket.boost > 0.6) {
+      for (let k = 0; k < 2; k++) {
+        sparks.push({
+          x: rocket.x + 10 - Math.cos(rocket.angle) * 14,
+          y: rocket.y + 10 - Math.sin(rocket.angle) * 14,
+          vx: -Math.cos(rocket.angle) * (1.5 + Math.random()) + (Math.random() - 0.5),
+          vy: -Math.sin(rocket.angle) * (1.5 + Math.random()) + (Math.random() - 0.5),
+          life: 1,
+          hue: 18 + Math.random() * 32
+        });
+      }
+    }
+    for (let k = sparks.length - 1; k >= 0; k--) {
+      const s = sparks[k];
+      s.x += s.vx; s.y += s.vy; s.life -= 0.03;
+      if (s.life <= 0) { sparks.splice(k, 1); continue; }
+      ctx.fillStyle = `hsla(${s.hue}, 100%, 62%, ${s.life * 0.8})`;
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, 1.2 + s.life * 1.8, 0, Math.PI * 2);
+      ctx.fill();
+    }
   }
 
   let raf;
@@ -719,6 +781,14 @@
   addEventListener('resize', size);
   addEventListener('pointermove', e => { mouse.x = e.clientX; mouse.y = e.clientY; }, { passive: true });
   addEventListener('pointerleave', () => { mouse.x = -9999; mouse.y = -9999; });
+  if (!reduced) addEventListener('keydown', (e) => {
+    if (e.target !== document.body || e.metaKey || e.ctrlKey || e.altKey) return;
+    if (e.key === 'ArrowLeft') { rocket.angle -= 0.22; e.preventDefault(); }
+    else if (e.key === 'ArrowRight') { rocket.angle += 0.22; e.preventDefault(); }
+    else if (e.key === 'ArrowUp') { rocket.boost = Math.min(rocket.boost + 0.4, 3); e.preventDefault(); }
+    else if (e.key === 'ArrowDown') { rocket.boost = 0; e.preventDefault(); }
+    else if (e.key === ' ') { rocket.boost = Math.min(rocket.boost + 4, 8); e.preventDefault(); }
+  });
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) cancelAnimationFrame(raf); else if (!reduced) loop();
   });
