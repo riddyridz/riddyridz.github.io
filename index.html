@@ -320,6 +320,42 @@
     color: var(--cyan);
   }
 
+  /* ---------- certifications ---------- */
+  .certs {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-top: 22px;
+  }
+  @media (min-width: 560px) { .certs { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 960px) { .certs { grid-template-columns: 1fr 1fr 1fr 1fr; } }
+  .cert {
+    display: flex; align-items: center; gap: 13px;
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 14px;
+    padding: 14px 15px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: transform 0.2s ease, border-color 0.2s ease;
+  }
+  .cert:hover { transform: translateY(-3px); border-color: rgba(34, 211, 238, 0.35); }
+  .cert-badge {
+    flex: 0 0 46px; height: 46px;
+    display: inline-flex; align-items: center; justify-content: center;
+    background: #fff;
+    border-radius: 12px;
+    font-family: var(--sans);
+    font-weight: 800;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+  }
+  .cert-badge.ibm { color: #0f62fe; font-size: 13.5px; letter-spacing: 0.02em; }
+  .cert-badge.apm { color: #6f2c91; font-size: 12.5px; }
+  .cert-badge.circl { color: #ff5a5f; font-size: 22px; }
+  .cert-badge.a11y { background: #0a66c2; font-size: 22px; }
+  .cert-name { font-size: 14px; font-weight: 600; line-height: 1.35; }
+  .cert-meta { font-family: var(--mono); font-size: 11.5px; color: var(--muted); margin-top: 3px; }
+
   /* ---------- contact ---------- */
   .contact { text-align: center; padding-bottom: 40px; }
   .contact .big {
@@ -411,6 +447,8 @@
       bottom: calc(10px + env(safe-area-inset-bottom));
       z-index: 60;
       display: flex; gap: 8px;
+      transform: translateY(calc(100% + 30px));
+      transition: transform 0.4s cubic-bezier(0.65, 0.05, 0.36, 1);
       background: rgba(10, 16, 29, 0.82);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
@@ -419,6 +457,7 @@
       padding: 8px;
       box-shadow: 0 12px 40px rgba(0, 0, 0, 0.55);
     }
+    .mobile-cta.visible { transform: translateY(0); }
     .mobile-cta .btn { flex: 1; justify-content: center; padding: 12px 8px; font-size: 14.5px; }
     .menu-btn {
       display: inline-flex; align-items: center; justify-content: center;
@@ -705,13 +744,45 @@
       <span class="chip">Cloudflare</span>
       <span class="chip">Adobe CC</span>
     </div>
-    <div class="card" style="margin-top:22px">
-      <p><strong>Certified:</strong> Foundations of UX Design — Google (2022) ·
-      Enterprise Design Thinking Practitioner — IBM (2019) · Accessibility for
-      Web Design (2018) · Drupal 9 Essential Training (2025) · Fundamentals of
-      Digital Marketing — Google (2019) · Project Management Fundamentals —
-      APM (2018) · Leader as Coach — Circl (2021) · Data Science Orientation —
-      IBM (2022).</p>
+    <div class="certs">
+      <div class="cert">
+        <span class="cert-badge">
+          <svg viewBox="0 0 48 48" width="26" height="26" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+        </span>
+        <div><div class="cert-name">Foundations of UX Design</div><div class="cert-meta">Google · 2022</div></div>
+      </div>
+      <div class="cert">
+        <span class="cert-badge ibm">IBM</span>
+        <div><div class="cert-name">Enterprise Design Thinking Practitioner</div><div class="cert-meta">IBM · 2019</div></div>
+      </div>
+      <div class="cert">
+        <span class="cert-badge">
+          <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path fill="#0678BE" d="M12 1.5c.6 2.7 2.4 4.5 4.3 6.4 2.4 2.4 4.7 5 4.7 8.3A9 9 0 0 1 12 25a9 9 0 0 1-9-8.8c0-3.3 2.3-5.9 4.7-8.3C9.6 6 11.4 4.2 12 1.5z" transform="translate(0 -1.3)"/></svg>
+        </span>
+        <div><div class="cert-name">Drupal 9 Essential Training</div><div class="cert-meta">Drupal · 2025</div></div>
+      </div>
+      <div class="cert">
+        <span class="cert-badge a11y">♿</span>
+        <div><div class="cert-name">Accessibility for Web Design</div><div class="cert-meta">Lynda · 2018</div></div>
+      </div>
+      <div class="cert">
+        <span class="cert-badge">
+          <svg viewBox="0 0 48 48" width="26" height="26" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+        </span>
+        <div><div class="cert-name">Fundamentals of Digital Marketing</div><div class="cert-meta">Google · 2019</div></div>
+      </div>
+      <div class="cert">
+        <span class="cert-badge apm">APM</span>
+        <div><div class="cert-name">Project Management Fundamentals</div><div class="cert-meta">APM · 2018</div></div>
+      </div>
+      <div class="cert">
+        <span class="cert-badge circl">C</span>
+        <div><div class="cert-name">Leader as Coach</div><div class="cert-meta">Circl · 2021</div></div>
+      </div>
+      <div class="cert">
+        <span class="cert-badge ibm">IBM</span>
+        <div><div class="cert-name">Data Science Orientation</div><div class="cert-meta">IBM · 2022</div></div>
+      </div>
     </div>
   </section>
 
@@ -955,6 +1026,16 @@
   });
 
   if (reduced) { step(); } else { loop(); }
+})();
+
+// the dock stays out of the way until the hero (with its own CTAs) scrolls past
+(function () {
+  const dock = document.querySelector('.mobile-cta');
+  const hero = document.querySelector('.hero');
+  if (!dock || !hero) return;
+  new IntersectionObserver((entries) => {
+    dock.classList.toggle('visible', !entries[0].isIntersecting);
+  }, { threshold: 0.25 }).observe(hero);
 })();
 
 // mobile menu sheet
