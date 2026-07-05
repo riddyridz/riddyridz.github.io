@@ -356,6 +356,39 @@
   }
   footer a { color: var(--cyan); text-decoration: none; }
 
+  /* ---------- mobile-dedicated experience ---------- */
+  .mobile-cta { display: none; }
+  @media (max-width: 720px) {
+    .nav {
+      max-width: 94vw;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+    .nav::-webkit-scrollbar { display: none; }
+    .hero { padding-top: 84px; min-height: 92svh; }
+    section { padding: 54px 0; }
+    .card { padding: 20px 18px; }
+    .t-item { padding-left: 26px; }
+    .mobile-cta {
+      position: fixed;
+      left: 12px; right: 12px;
+      bottom: calc(10px + env(safe-area-inset-bottom));
+      z-index: 60;
+      display: flex; gap: 10px;
+      background: rgba(10, 16, 29, 0.82);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid var(--card-border);
+      border-radius: 18px;
+      padding: 10px;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.55);
+    }
+    .mobile-cta .btn { flex: 1; justify-content: center; padding: 12px 8px; font-size: 14.5px; }
+    .contact .cta-row { display: none; } /* the dock is the contact CTA on mobile */
+    footer { padding-bottom: 104px; }
+  }
+
   /* ---------- rocket easter egg ---------- */
   #rocket {
     position: fixed; left: 0; top: 0; z-index: 0;
@@ -408,9 +441,9 @@
     <div class="loc">📍 London, United Kingdom</div>
     <div class="cta-row">
       <a class="btn btn-primary" href="https://www.linkedin.com/in/ridhwanhaque/" target="_blank" rel="noopener">LinkedIn ↗</a>
-      <a class="btn btn-ghost" href="https://github.com/riddyridz" target="_blank" rel="noopener">GitHub ↗</a>
+      <a class="btn btn-ghost" href="mailto:syed.r.haque@outlook.com">Email ✉</a>
     </div>
-    <div class="scroll-hint">↓ scroll</div>
+    <div class="scroll-hint" id="scrollHint">↓ scroll</div>
   </header>
 
   <section id="about" class="reveal">
@@ -632,15 +665,19 @@
     <div class="cta-row">
       <a class="btn btn-primary" href="mailto:syed.r.haque@outlook.com">Email me ✉</a>
       <a class="btn btn-ghost" href="https://www.linkedin.com/in/ridhwanhaque/" target="_blank" rel="noopener">LinkedIn ↗</a>
-      <a class="btn btn-ghost" href="https://github.com/riddyridz" target="_blank" rel="noopener">GitHub ↗</a>
     </div>
   </section>
 
 </div>
 
+<nav class="mobile-cta" aria-label="quick actions">
+  <a class="btn btn-primary" href="mailto:syed.r.haque@outlook.com">Email ✉</a>
+  <a class="btn btn-ghost" href="https://www.linkedin.com/in/ridhwanhaque/" target="_blank" rel="noopener">LinkedIn ↗</a>
+</nav>
+
 <footer>
-  ridhwan.is-a.dev · hand-built, zero frameworks · <a href="https://github.com/riddyridz/riddyridz.github.io" target="_blank" rel="noopener">source</a><br>
-  <span style="opacity:0.65">psst — arrow keys steer the rocket, spacebar for jet fuel 🚀</span>
+  ridhwan.is-a.dev · hand-built, zero frameworks<br>
+  <span style="opacity:0.65" id="rocketHint">psst — arrow keys steer the rocket, spacebar for jet fuel 🚀</span>
 </footer>
 
 <script>
@@ -648,6 +685,7 @@
   const canvas = document.getElementById('particles');
   const ctx = canvas.getContext('2d');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const coarse = matchMedia('(pointer: coarse)').matches; // phones & tablets
 
   let W, H, dpr, particles;
   const mouse = { x: -9999, y: -9999 };
@@ -661,7 +699,7 @@
   const sparks = [];
 
   function size() {
-    dpr = Math.min(devicePixelRatio || 1, 2);
+    dpr = Math.min(devicePixelRatio || 1, coarse ? 1.5 : 2);
     W = innerWidth; H = innerHeight;
     canvas.width = W * dpr; canvas.height = H * dpr;
     canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
@@ -670,7 +708,9 @@
   }
 
   function spawn() {
-    const count = Math.min(140, Math.round((W * H) / 14000));
+    const count = coarse
+      ? Math.min(70, Math.round((W * H) / 18000))
+      : Math.min(140, Math.round((W * H) / 14000));
     particles = Array.from({ length: count }, () => ({
       x: Math.random() * W,
       y: Math.random() * H,
@@ -781,7 +821,7 @@
   addEventListener('resize', size);
   addEventListener('pointermove', e => { mouse.x = e.clientX; mouse.y = e.clientY; }, { passive: true });
   addEventListener('pointerleave', () => { mouse.x = -9999; mouse.y = -9999; });
-  if (!reduced) addEventListener('keydown', (e) => {
+  if (!reduced && !coarse) addEventListener('keydown', (e) => {
     if (e.target !== document.body || e.metaKey || e.ctrlKey || e.altKey) return;
     if (e.key === 'ArrowLeft') { rocket.angle -= 0.22; e.preventDefault(); }
     else if (e.key === 'ArrowRight') { rocket.angle += 0.22; e.preventDefault(); }
@@ -789,6 +829,58 @@
     else if (e.key === 'ArrowDown') { rocket.boost = 0; e.preventDefault(); }
     else if (e.key === ' ') { rocket.boost = Math.min(rocket.boost + 4, 8); e.preventDefault(); }
   });
+
+  // touch devices get their own dedicated controls:
+  // swipe direction steers the rocket, tilt (where allowed) nudges it,
+  // and it refuels itself with a flame burst every few seconds.
+  if (!reduced && coarse) {
+    let lastT = null;
+    addEventListener('touchstart', (e) => {
+      const t = e.touches[0];
+      lastT = { x: t.clientX, y: t.clientY };
+    }, { passive: true });
+    addEventListener('touchmove', (e) => {
+      const t = e.touches[0];
+      mouse.x = t.clientX; mouse.y = t.clientY; // finger lights up the particles
+      if (lastT) {
+        const dx = t.clientX - lastT.x, dy = t.clientY - lastT.y;
+        if (Math.hypot(dx, dy) > 14) {
+          const target = Math.atan2(dy, dx);
+          let diff = target - rocket.angle;
+          while (diff > Math.PI) diff -= 2 * Math.PI;
+          while (diff < -Math.PI) diff += 2 * Math.PI;
+          rocket.angle += diff * 0.25; // ease toward the swipe direction
+          rocket.boost = Math.min(rocket.boost + 0.25, 2.5);
+          lastT = { x: t.clientX, y: t.clientY };
+        }
+      }
+    }, { passive: true });
+    addEventListener('touchend', () => {
+      lastT = null;
+      mouse.x = -9999; mouse.y = -9999;
+    }, { passive: true });
+
+    // gentle tilt steering where no permission prompt is needed (Android)
+    if (typeof DeviceOrientationEvent !== 'undefined' &&
+        typeof DeviceOrientationEvent.requestPermission !== 'function') {
+      addEventListener('deviceorientation', (e) => {
+        if (e.gamma == null) return;
+        if (Math.abs(e.gamma) > 14) rocket.angle += (e.gamma > 0 ? 1 : -1) * 0.015;
+      });
+    }
+
+    // self-fuelling flame show
+    setInterval(() => { rocket.boost = Math.min(rocket.boost + 4, 7); },
+      7000 + Math.random() * 5000);
+  }
+
+  // per-device copy: the hints describe the controls this device actually has
+  if (coarse) {
+    const rh = document.getElementById('rocketHint');
+    if (rh) rh.textContent = 'psst — swipe to steer the rocket, it fuels itself 🚀';
+    const sh = document.getElementById('scrollHint');
+    if (sh) sh.textContent = '↓ swipe';
+  }
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) cancelAnimationFrame(raf); else if (!reduced) loop();
   });
