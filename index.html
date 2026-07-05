@@ -3,597 +3,632 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ridhwan — Notebook</title>
-<meta name="description" content="Ridhwan — a developer's notebook. Software, scripts, and the notes in between.">
+<title>Ridhwan Haque — Front-End Engineer</title>
+<meta name="description" content="Ridhwan Haque — Front-End Engineer. Head of Digital &amp; Technology at Darul Ihsaan, Digital Experience Officer at City St George's, University of London. UCL Information Management for Business, First Class.">
+<meta name="author" content="Syed Ridhwanul Haque">
+<meta property="og:title" content="Ridhwan Haque — Front-End Engineer">
+<meta property="og:description" content="Front-End Engineer · Head of Digital &amp; Technology at Darul Ihsaan · Digital Experience Officer at City St George's, University of London.">
+<meta property="og:url" content="https://ridhwan.is-a.dev">
+<meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Kalam:wght@400;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --paper: #f5f1e8;
-    --paper-2: #f8f5ee;
-    --ink: #14110d;
-    --ink-soft: #302d28;
-    --muted: #575552;
-    --rule: #cfcdca;
-    --margin: #e40014;
-    --margin-soft: #c53637;
-    --punch: #b9b7b4;
-    --hand: "Caveat", cursive;
-    --note: "Kalam", cursive;
+    --bg: #060a13;
+    --bg-2: #0a101d;
+    --card: rgba(255, 255, 255, 0.04);
+    --card-border: rgba(255, 255, 255, 0.09);
+    --fg: #e8ecf4;
+    --muted: #93a0b4;
+    --cyan: #22d3ee;
+    --violet: #a78bfa;
+    --pink: #f472b6;
+    --grad: linear-gradient(92deg, var(--cyan), var(--violet) 55%, var(--pink));
+    --sans: "Outfit", system-ui, sans-serif;
     --mono: "JetBrains Mono", monospace;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
-  html, body { background: var(--paper); color: var(--ink); }
   body {
-    font-family: var(--note), system-ui, sans-serif;
-    min-height: 100vh;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--sans);
+    line-height: 1.6;
     overflow-x: hidden;
   }
+  ::selection { background: rgba(34, 211, 238, 0.3); }
   a { color: inherit; }
-  main { position: relative; padding: 40px 16px 80px; }
 
-  /* ---------- preloader (inspo: create/develop/design) ---------- */
-  .preloader {
-    position: fixed; inset: 0; z-index: 100;
-    display: flex; align-items: center; justify-content: center;
-    background: var(--paper);
-    animation: preloader-out 0.5s ease 1.4s forwards;
+  /* ---------- background layers ---------- */
+  #particles {
+    position: fixed; inset: 0; z-index: 0;
+    pointer-events: none;
   }
-  .preloader span {
-    font-family: var(--hand);
-    font-weight: 700;
-    font-size: clamp(28px, 5vw, 44px);
-    color: var(--ink-soft);
-    opacity: 0;
-    animation: word-in 1.2s ease 0.1s forwards;
+  .nebula {
+    position: fixed; inset: 0; z-index: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(600px 400px at 12% -5%, rgba(34, 211, 238, 0.13), transparent 65%),
+      radial-gradient(700px 500px at 90% 10%, rgba(167, 139, 250, 0.12), transparent 65%),
+      radial-gradient(800px 600px at 50% 110%, rgba(244, 114, 182, 0.08), transparent 65%);
   }
-  .preloader span + span { margin-left: 14px; }
-  .preloader span:nth-child(2) { animation-delay: 0.35s; color: var(--margin); }
-  .preloader span:nth-child(3) { animation-delay: 0.6s; }
-  @keyframes word-in { to { opacity: 1; } }
-  @keyframes preloader-out {
-    to { opacity: 0; visibility: hidden; }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .preloader { display: none; }
+  .grid-lines {
+    position: fixed; inset: 0; z-index: 0;
+    pointer-events: none;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse 90% 60% at 50% 0%, black 30%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse 90% 60% at 50% 0%, black 30%, transparent 75%);
   }
 
-  /* ---------- floating pill nav (inspo: fixed top nav) ---------- */
-  .float-nav {
-    position: fixed; top: 20px; left: 50%;
-    transform: translate(-50%, -100px);
+  .wrap { position: relative; z-index: 1; max-width: 1060px; margin: 0 auto; padding: 0 24px; }
+
+  /* ---------- nav ---------- */
+  .nav {
+    position: fixed; top: 18px; left: 50%;
+    transform: translateX(-50%);
     z-index: 50;
-    display: flex; align-items: center; gap: 18px;
-    font-family: var(--hand);
-    font-size: 19px; font-weight: 700;
-    background: var(--paper-2);
-    border: 2px solid var(--ink);
+    display: flex; align-items: center; gap: 4px;
+    background: rgba(10, 16, 29, 0.72);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid var(--card-border);
     border-radius: 999px;
-    padding: 8px 22px;
-    box-shadow: 3px 4px 0 var(--ink-soft), 0 12px 30px -12px rgba(20,17,13,0.4);
-    transition: transform 0.35s cubic-bezier(0.65, 0.05, 0.36, 1);
+    padding: 8px 10px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+    white-space: nowrap;
   }
-  .float-nav.visible { transform: translate(-50%, 0) rotate(-0.3deg); }
-  .float-nav a {
+  .nav a {
     position: relative;
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--muted);
     text-decoration: none;
-    color: var(--ink-soft);
-    padding: 0 2px;
+    padding: 4px 12px;
+    border-radius: 999px;
+    transition: color 0.25s;
   }
-  .float-nav a:hover { color: var(--margin); }
-  .float-nav a::after {
+  .nav a:hover { color: var(--fg); }
+  .nav a::after {
     content: "";
-    position: absolute; left: 0; right: 0; bottom: -2px;
-    height: 2px; background: var(--margin);
+    position: absolute; left: 12px; right: 12px; bottom: 1px;
+    height: 1px;
+    background: var(--grad);
     transform: scaleX(0);
     transform-origin: bottom right;
     transition: transform 0.3s cubic-bezier(0.65, 0.05, 0.36, 1);
   }
-  .float-nav a:hover::after { transform: scaleX(1); transform-origin: bottom left; }
-  .float-nav .pin { color: var(--margin); font-size: 16px; }
-
-  /* ---------- notebook page ---------- */
-  .page {
-    position: relative;
-    margin: 0 auto;
-    max-width: 880px;
-    border-radius: 6px;
-    padding: 40px 20px 64px 64px;
-    background:
-      repeating-linear-gradient(to bottom,
-        transparent 0, transparent 31px,
-        var(--rule) 31px, var(--rule) 32px),
-      var(--paper-2);
-    background-position: 0 56px;
-    box-shadow:
-      0 1px 0 rgba(0,0,0,0.04),
-      0 20px 40px -20px rgba(20,17,13,0.35),
-      0 60px 80px -40px rgba(20,17,13,0.25);
-  }
-  .margin-line {
-    position: absolute; top: 0; bottom: 0; left: 44px;
-    width: 1.5px; background: var(--margin); opacity: 0.8;
-  }
-  .punch-dots {
-    position: absolute; top: 0; bottom: 0; left: 10px;
-    width: 14px; opacity: 0.7;
-    background-image: radial-gradient(circle, var(--punch) 0 5px, transparent 6px);
-    background-position: 0 70px;
-    background-repeat: repeat-y;
-    background-size: 14px 110px;
-  }
-  .pushpin {
-    position: absolute; top: -12px; left: 50%;
-    transform: translateX(-50%); z-index: 20;
-    filter: drop-shadow(2px 4px 4px rgba(0,0,0,0.25));
-  }
-  @media (min-width: 640px) {
-    .page { padding: 56px 56px 80px 110px; }
-    .margin-line { left: 78px; }
-    .punch-dots { left: 28px; }
-  }
-
-  .handwritten { font-family: var(--hand); }
-  .note { font-family: var(--note); }
-  .tilt-1 { transform: rotate(-0.4deg); }
-  .tilt-2 { transform: rotate(0.5deg); }
-  .tilt-3 { transform: rotate(-0.8deg); }
-
-  h1 {
-    font-family: var(--hand);
-    font-weight: 700;
-    line-height: 1;
-    font-size: clamp(40px, 7vw, 64px);
-  }
-  h1 .underlined {
-    display: inline-block;
-    border-bottom: 3px solid var(--margin);
-    padding-bottom: 2px;
-    transform: rotate(-1deg);
-  }
-  .subtitle {
-    font-family: var(--hand);
-    font-size: 24px;
-    color: var(--margin-soft);
-    display: inline-block;
-    transform: rotate(-0.4deg);
-  }
-  .meta { font-size: 16px; color: var(--muted); margin-top: 8px; }
-
-  /* ---------- in-page menu box ---------- */
-  .menu-box {
-    position: relative;
-    display: block;
-    margin: 20px 0 28px;
-    border: 2px solid var(--ink);
-    border-radius: 10px;
-    padding: 14px 18px 12px;
-    background:
-      repeating-linear-gradient(135deg, rgba(228,0,20,0.04) 0 6px, transparent 6px 12px),
-      rgba(255,255,255,0.45);
-    box-shadow: 3px 4px 0 var(--ink-soft);
-    transform: rotate(-0.3deg);
-  }
-  .menu-tab {
-    position: absolute; top: -14px; left: 18px;
-    font-family: var(--hand);
-    font-size: 18px; font-weight: 700;
-    letter-spacing: 0.5px;
-    color: var(--margin);
-    background: var(--paper);
-    border: 1.5px dashed var(--margin-soft);
-    border-radius: 999px;
-    padding: 0 10px;
-    transform: rotate(-1deg);
-  }
-  .menu-links {
-    font-family: var(--hand);
-    font-size: 20px;
-    line-height: 1.4;
-    display: flex; flex-wrap: wrap; align-items: center;
-    column-gap: 8px; row-gap: 4px;
-  }
-  .menu-links .dot { color: var(--muted); margin: 0 4px; user-select: none; }
-  .menu-link {
-    position: relative;
-    display: inline-block;
-    color: var(--ink-soft);
-    text-decoration: none;
-    padding: 0 4px;
-    transition: color 0.12s;
-  }
-  .menu-link::after {
-    content: "";
-    position: absolute; left: 2px; right: 2px; bottom: 0;
-    height: 2px; background: var(--margin);
-    transform: scaleX(0);
-    transform-origin: bottom right;
-    transition: transform 0.3s cubic-bezier(0.65, 0.05, 0.36, 1);
-  }
-  .menu-link:hover { color: var(--margin); }
-  .menu-link:hover::after { transform: scaleX(1); transform-origin: bottom left; }
-  .menu-link-active {
-    display: inline-block;
-    color: var(--ink);
-    font-weight: 700;
-    padding: 0 6px;
-    position: relative;
-    background: linear-gradient(transparent 0 55%, rgba(255,230,100,0.7) 55% 92%, transparent 92%);
-  }
-  .menu-link-active::after {
-    content: "";
-    position: absolute; left: 4px; right: 4px; bottom: -2px;
-    height: 2px; background: var(--margin);
-    transform: rotate(-0.5deg);
-  }
-
-  h2 {
-    font-family: var(--hand);
-    font-weight: 700;
-    font-size: 30px;
-    display: inline-block;
-    margin: 28px 0 8px;
-    transform: rotate(-0.3deg);
-  }
-  @media (min-width: 768px) { h2 { font-size: 36px; } }
-  h2 .pen { color: var(--margin); margin-right: 4px; }
-
-  .doodle-box {
-    border: 2px solid var(--ink);
-    border-radius: 12px;
-    padding: 14px 18px;
-    background: rgba(255,255,255,0.35);
-    box-shadow: 2px 3px 0 var(--ink-soft);
-    transform: rotate(-0.25deg);
-    font-size: 17px;
-    line-height: 1.85;
-    color: var(--ink-soft);
-    margin-bottom: 16px;
-  }
-  .doodle-box .label, .row-label {
-    display: inline-block;
-    min-width: 110px;
-    color: var(--margin);
-    font-weight: 700;
-  }
-
-  .prose {
-    font-size: 17px;
-    line-height: 1.9;
-    color: var(--ink-soft);
-    margin-bottom: 16px;
-  }
-  .prose p + p { margin-top: 12px; }
-  .prose a {
-    font-weight: 700;
-    color: var(--margin);
-    text-decoration: none;
-    border-bottom: 2px solid var(--margin);
-  }
-
-  /* ---------- what I do cards (inspo: service wobble cards) ---------- */
-  .cards {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 18px;
-    margin: 14px 0 16px;
-  }
-  @media (min-width: 640px) { .cards { grid-template-columns: repeat(3, 1fr); } }
-  .card {
-    border: 2px solid var(--ink);
-    border-radius: 12px;
-    background: rgba(255,255,255,0.4);
-    box-shadow: 2px 3px 0 var(--ink-soft);
-    padding: 18px 16px;
-    text-align: center;
-    transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
-  }
-  .card:nth-child(1) { transform: rotate(-0.5deg); }
-  .card:nth-child(2) { transform: rotate(0.4deg); }
-  .card:nth-child(3) { transform: rotate(-0.3deg); }
-  .card:hover {
-    transform: rotate(0deg) translateY(-4px) scale(1.02);
-    box-shadow: 4px 6px 0 var(--ink-soft);
-  }
-  .card .icon { font-size: 34px; line-height: 1; }
-  .card h3 {
-    font-family: var(--hand);
-    font-weight: 700;
-    font-size: 26px;
-    margin: 10px 0 6px;
-  }
-  .card:hover h3 { color: var(--margin); }
-  .card p {
-    font-size: 15px;
-    line-height: 1.7;
-    color: var(--ink-soft);
-  }
-
-  /* ---------- tech stickers (inspo: tech stack badges) ---------- */
-  .stickers {
-    display: flex; flex-wrap: wrap;
-    gap: 18px 22px;
-    margin: 16px 0 8px;
-  }
-  .sticker { text-align: center; }
-  .sticker .disc {
-    width: 72px; height: 72px;
-    border-radius: 50%;
-    border: 2px solid var(--ink);
-    background: #fff;
-    box-shadow: 2px 3px 0 var(--ink-soft);
-    display: flex; align-items: center; justify-content: center;
+  .nav a:hover::after { transform: scaleX(1); transform-origin: bottom left; }
+  .nav .brand {
     font-family: var(--mono);
     font-weight: 700;
-    font-size: 19px;
-    margin: 0 auto;
-    transition: transform 0.15s ease-out;
+    font-size: 14px;
+    padding: 4px 12px;
+    background: var(--grad);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
   }
-  .sticker:nth-child(odd) .disc { transform: rotate(-2deg); }
-  .sticker:nth-child(even) .disc { transform: rotate(2deg); }
-  .sticker:hover .disc { transform: rotate(0deg) scale(1.08); border-color: var(--margin); color: var(--margin); }
-  .sticker .name {
-    font-family: var(--note);
-    font-size: 13px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: var(--muted);
-    margin-top: 8px;
+  @media (max-width: 560px) {
+    .nav { gap: 0; padding: 7px 6px; }
+    .nav a { padding: 4px 8px; font-size: 13px; }
+    .nav .brand { display: none; }
   }
 
-  /* ---------- projects ---------- */
-  .project {
-    border: 2px solid var(--ink);
-    border-radius: 12px;
-    background: rgba(255,255,255,0.4);
-    box-shadow: 2px 3px 0 var(--ink-soft);
-    padding: 16px 18px;
-    margin: 14px 0;
-    transform: rotate(-0.25deg);
-    transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
-  }
-  .project:hover {
-    transform: rotate(0deg) translateY(-3px);
-    box-shadow: 4px 6px 0 var(--ink-soft);
-  }
-  .project h3 { font-family: var(--hand); font-size: 26px; font-weight: 700; }
-  .project h3 a { text-decoration: none; }
-  .project h3 a:hover { color: var(--margin); }
-  .project p { font-size: 15px; line-height: 1.7; color: var(--ink-soft); margin-top: 4px; }
-  .project .tags { margin-top: 8px; }
-  .project-empty {
-    border: 2px dashed var(--muted);
-    border-radius: 12px;
-    padding: 16px 18px;
-    margin: 14px 0;
-    color: var(--muted);
-    font-family: var(--hand);
-    font-size: 22px;
+  /* ---------- hero ---------- */
+  .hero {
+    min-height: 100svh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
     text-align: center;
-    transform: rotate(0.3deg);
-    background: transparent;
+    padding: 96px 0 48px;
+  }
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 14px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--cyan);
+    margin-bottom: 18px;
+  }
+  .hero h1 {
+    font-size: clamp(46px, 9vw, 96px);
+    font-weight: 800;
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+  }
+  .hero h1 .grad {
+    background: var(--grad);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .hero .roles {
+    margin-top: 22px;
+    max-width: 640px;
+    color: var(--muted);
+    font-size: clamp(16px, 2.4vw, 19px);
+    font-weight: 300;
+  }
+  .hero .roles strong { color: var(--fg); font-weight: 600; }
+  .hero .loc {
+    margin-top: 14px;
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .cta-row { margin-top: 34px; display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 15px; font-weight: 600;
+    text-decoration: none;
+    padding: 12px 26px;
+    border-radius: 999px;
+    transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+  }
+  .btn-primary {
+    color: #04131a;
+    background: linear-gradient(92deg, var(--cyan), #7dd3fc);
+    box-shadow: 0 8px 30px -8px rgba(34, 211, 238, 0.55);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 14px 40px -8px rgba(34, 211, 238, 0.7); }
+  .btn-ghost {
+    color: var(--fg);
+    border: 1px solid var(--card-border);
+    background: var(--card);
+    backdrop-filter: blur(8px);
+  }
+  .btn-ghost:hover { transform: translateY(-2px); background: rgba(255,255,255,0.08); }
+  .scroll-hint {
+    margin-top: 60px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+    animation: bob 2.4s ease-in-out infinite;
+  }
+  @keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(7px); } }
+
+  /* ---------- sections ---------- */
+  section { padding: 72px 0; }
+  .sec-label {
+    font-family: var(--mono);
+    font-size: 13px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--cyan);
+  }
+  .sec-title {
+    font-size: clamp(30px, 5vw, 44px);
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    margin: 6px 0 30px;
   }
 
-  .pill-row { margin: 6px 0; }
-  .pill {
-    display: inline-block;
+  .about-grid { display: grid; grid-template-columns: 1fr; gap: 22px; }
+  @media (min-width: 820px) { .about-grid { grid-template-columns: 3fr 2fr; } }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 18px;
+    padding: 26px 28px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  }
+  .card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(34, 211, 238, 0.35);
+    box-shadow: 0 20px 50px -20px rgba(34, 211, 238, 0.25);
+  }
+  .card p { color: var(--muted); font-weight: 300; }
+  .card p + p { margin-top: 12px; }
+  .card p strong, .card p a { color: var(--fg); font-weight: 600; }
+  .card a { text-decoration: none; border-bottom: 1px solid rgba(34,211,238,0.5); }
+  .card a:hover { color: var(--cyan); }
+  .fact-list { list-style: none; }
+  .fact-list li {
+    display: flex; gap: 12px;
+    padding: 9px 0;
+    border-bottom: 1px dashed rgba(255,255,255,0.08);
+    font-size: 15px;
+  }
+  .fact-list li:last-child { border-bottom: none; }
+  .fact-list .k {
     font-family: var(--mono);
     font-size: 12.5px;
-    border: 1.5px solid var(--ink);
-    border-radius: 999px;
-    background: var(--paper-2);
-    padding: 1px 10px;
-    margin: 3px 4px 3px 0;
+    color: var(--cyan);
+    min-width: 96px;
+    padding-top: 3px;
   }
-  .pill.hot { border-color: var(--margin); color: var(--margin); }
+  .fact-list .v { color: var(--muted); }
 
-  .sticky-note {
-    display: inline-block;
-    position: relative;
-    font-family: var(--hand);
-    font-size: 22px;
-    color: var(--ink);
-    background: #fff8b5;
-    padding: 14px 18px;
-    margin-top: 32px;
-    transform: rotate(2deg);
-    box-shadow: 3px 4px 12px rgba(0,0,0,0.15);
-  }
-  .sticky-note::before {
+  /* ---------- experience timeline ---------- */
+  .timeline { position: relative; margin-left: 10px; }
+  .timeline::before {
     content: "";
-    position: absolute; top: -8px; left: 50%;
-    width: 70px; height: 16px;
-    background: rgba(228,0,20,0.25);
-    border: 1px dashed rgba(228,0,20,0.4);
-    transform: translateX(-50%) rotate(-3deg);
+    position: absolute; top: 6px; bottom: 6px; left: 0;
+    width: 2px;
+    background: linear-gradient(180deg, var(--cyan), var(--violet), transparent);
+    opacity: 0.5;
   }
-
-  .end-of-page {
-    font-family: var(--hand);
-    font-size: 24px;
+  .t-item { position: relative; padding: 0 0 34px 34px; }
+  .t-item:last-child { padding-bottom: 0; }
+  .t-item::before {
+    content: "";
+    position: absolute; left: -5px; top: 7px;
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 2.5px solid var(--cyan);
+    box-shadow: 0 0 14px rgba(34, 211, 238, 0.7);
+  }
+  .t-item .when {
+    font-family: var(--mono);
+    font-size: 12.5px;
     color: var(--muted);
-    text-align: right;
-    margin-top: 40px;
-    transform: rotate(-0.5deg);
+    letter-spacing: 0.06em;
+  }
+  .t-item h3 { font-size: 21px; font-weight: 600; margin-top: 3px; }
+  .t-item .org { color: var(--cyan); font-weight: 600; }
+  .t-item p { color: var(--muted); font-weight: 300; font-size: 15.5px; margin-top: 6px; max-width: 640px; }
+
+  /* ---------- education & awards ---------- */
+  .duo { display: grid; grid-template-columns: 1fr; gap: 22px; }
+  @media (min-width: 820px) { .duo { grid-template-columns: 1fr 1fr; } }
+  .edu-degree { font-size: 21px; font-weight: 600; }
+  .edu-grade {
+    display: inline-block;
+    margin-top: 8px;
+    font-family: var(--mono);
+    font-size: 13px;
+    padding: 3px 12px;
+    border-radius: 999px;
+    color: #04131a;
+    background: linear-gradient(92deg, var(--cyan), #7dd3fc);
+    font-weight: 700;
+  }
+  .awards { list-style: none; margin-top: 4px; }
+  .awards li {
+    display: flex; align-items: baseline; gap: 12px;
+    padding: 10px 0;
+    color: var(--muted);
+    font-size: 15.5px;
+    border-bottom: 1px dashed rgba(255,255,255,0.08);
+  }
+  .awards li:last-child { border-bottom: none; }
+  .awards .medal { color: var(--violet); font-family: var(--mono); font-size: 13px; }
+
+  /* ---------- skills ---------- */
+  .chips { display: flex; flex-wrap: wrap; gap: 10px; }
+  .chip {
+    font-family: var(--mono);
+    font-size: 13.5px;
+    color: var(--fg);
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 999px;
+    padding: 7px 16px;
+    transition: transform 0.2s, border-color 0.2s, color 0.2s;
+    cursor: default;
+  }
+  .chip:hover {
+    transform: translateY(-3px);
+    border-color: var(--cyan);
+    color: var(--cyan);
   }
 
-  /* ---------- scroll reveal (inspo: AOS fade-up) ---------- */
-  .reveal {
-    opacity: 0;
-    transform: translateY(24px);
-    transition: opacity 0.5s ease, transform 0.5s ease;
+  /* ---------- writing ---------- */
+  .post {
+    display: block;
+    text-decoration: none;
   }
-  .reveal.in {
-    opacity: 1;
-    transform: translateY(0);
+  .post .date { font-family: var(--mono); font-size: 12.5px; color: var(--muted); }
+  .post h3 { font-size: 20px; font-weight: 600; margin-top: 4px; }
+  .post:hover h3 { color: var(--cyan); }
+  .post p { margin-top: 6px; }
+
+  /* ---------- contact ---------- */
+  .contact { text-align: center; padding-bottom: 40px; }
+  .contact .big {
+    font-size: clamp(28px, 5vw, 42px);
+    font-weight: 800;
+    letter-spacing: -0.01em;
   }
+  .contact .big .grad {
+    background: var(--grad);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .contact p { color: var(--muted); margin-top: 12px; font-weight: 300; }
+
+  footer {
+    position: relative; z-index: 1;
+    text-align: center;
+    padding: 26px 0 34px;
+    color: var(--muted);
+    font-family: var(--mono);
+    font-size: 12.5px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  footer a { color: var(--cyan); text-decoration: none; }
+
+  /* ---------- reveal ---------- */
+  .reveal { opacity: 0; transform: translateY(26px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.in { opacity: 1; transform: translateY(0); }
   @media (prefers-reduced-motion: reduce) {
     .reveal { opacity: 1; transform: none; transition: none; }
+    .scroll-hint { animation: none; }
     html { scroll-behavior: auto; }
   }
 </style>
 </head>
 <body>
 
-<div class="preloader" aria-hidden="true">
-  <span>write.</span><span>build.</span><span>ship.</span>
-</div>
+<canvas id="particles" aria-hidden="true"></canvas>
+<div class="nebula" aria-hidden="true"></div>
+<div class="grid-lines" aria-hidden="true"></div>
 
-<nav class="float-nav" id="floatNav" aria-label="floating menu">
-  <span class="pin">✎</span>
-  <a href="#top">home</a>
+<nav class="nav" aria-label="main">
+  <span class="brand">rh_</span>
   <a href="#about">about</a>
-  <a href="#skills">tinkering</a>
-  <a href="#projects">built</a>
-  <a href="#contact">hello</a>
+  <a href="#experience">experience</a>
+  <a href="#education">education</a>
+  <a href="#skills">skills</a>
+  <a href="#contact">contact</a>
 </nav>
 
-<main id="top">
-  <article class="page">
-    <span class="margin-line" aria-hidden="true"></span>
-    <span class="punch-dots" aria-hidden="true"></span>
-    <span class="pushpin" aria-hidden="true">
-      <svg width="34" height="34" viewBox="0 0 34 34" fill="none">
-        <defs>
-          <radialGradient id="pinHead" cx="0.35" cy="0.35" r="0.7">
-            <stop offset="0%" stop-color="#ff6470"/>
-            <stop offset="55%" stop-color="#e40014"/>
-            <stop offset="100%" stop-color="#7a000a"/>
-          </radialGradient>
-          <radialGradient id="pinShine" cx="0.3" cy="0.3" r="0.25">
-            <stop offset="0%" stop-color="rgba(255,255,255,0.85)"/>
-            <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
-          </radialGradient>
-        </defs>
-        <ellipse cx="17" cy="22" rx="3" ry="1.2" fill="rgba(0,0,0,0.18)"/>
-        <circle cx="17" cy="14" r="9" fill="url(#pinHead)"/>
-        <circle cx="14" cy="11" r="3.2" fill="url(#pinShine)"/>
-        <rect x="16.2" y="20" width="1.6" height="9" rx="0.6" fill="#9a9a96"/>
-      </svg>
-    </span>
+<div class="wrap">
 
-    <h1>Ridh<span class="underlined">wan</span></h1>
-    <span class="subtitle">— a developer's notebook</span>
-    <div class="meta note">est. 2026 · page 01 of ∞</div>
+  <header class="hero" id="top">
+    <div class="eyebrow">front-end engineer</div>
+    <h1>Ridhwan <span class="grad">Haque</span></h1>
+    <p class="roles">
+      Head of Digital &amp; Technology at <strong>Darul Ihsaan</strong> ·
+      Digital Experience Officer at <strong>City St George's, University of London</strong>
+    </p>
+    <div class="loc">📍 London, United Kingdom</div>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="https://www.linkedin.com/in/ridhwanhaque/" target="_blank" rel="noopener">LinkedIn ↗</a>
+      <a class="btn btn-ghost" href="https://github.com/riddyridz" target="_blank" rel="noopener">GitHub ↗</a>
+    </div>
+    <div class="scroll-hint">↓ scroll</div>
+  </header>
 
-    <nav class="menu-box" aria-label="notebook menu">
-      <span class="menu-tab">✎ menu</span>
-      <div class="menu-links">
-        <span class="menu-link-active">home</span>
-        <span class="dot">·</span>
-        <a class="menu-link" href="#about">about</a>
-        <span class="dot">·</span>
-        <a class="menu-link" href="#whatido">what I do</a>
-        <span class="dot">·</span>
-        <a class="menu-link" href="#skills">tinkering</a>
-        <span class="dot">·</span>
-        <a class="menu-link" href="#projects">things I've built</a>
-        <span class="dot">·</span>
-        <a class="menu-link" href="#contact">say hello</a>
+  <section id="about" class="reveal">
+    <div class="sec-label">01 · about</div>
+    <h2 class="sec-title">Hello 👋</h2>
+    <div class="about-grid">
+      <div class="card">
+        <p>I'm Ridhwan, a front-end engineer in London. I care about interfaces
+        that feel fast, look sharp, and stay out of the user's way, and I like
+        owning the whole journey from a rough idea to a polished product in
+        production.</p>
+        <p>I lead digital and technology at <strong>Darul Ihsaan</strong>, and I
+        shape digital experiences at <strong>City St George's, University of
+        London</strong>. Before that I studied Information Management for
+        Business at <strong>UCL</strong>, graduating with First Class Honours,
+        with a year in industry at GlaxoSmithKline's digital team along the way.</p>
+        <p>Feel free to reach out or grab a coffee with me — I'm open to
+        collaboration opportunities.</p>
       </div>
-    </nav>
-
-    <div class="reveal">
-      <h2><span class="pen">✎</span>a quick hello</h2>
-      <div class="doodle-box note">
-        <div><span class="label">they call me</span><span>Ridhwan</span></div>
-        <div><span class="label">what I do</span><span>Software Developer</span></div>
-        <div><span class="label">found at</span><span>github.com/riddyridz</span></div>
-        <div><span class="label">my motto</span><span>write. build. ship.</span></div>
+      <div class="card">
+        <ul class="fact-list">
+          <li><span class="k">base</span><span class="v">London, UK</span></li>
+          <li><span class="k">focus</span><span class="v">front-end engineering · digital experience</span></li>
+          <li><span class="k">degree</span><span class="v">BSc Information Management for Business, UCL — First Class</span></li>
+          <li><span class="k">languages</span><span class="v">English · Bengali · Arabic</span></li>
+          <li><span class="k">status</span><span class="v">open to collaboration</span></li>
+        </ul>
       </div>
     </div>
+  </section>
 
-    <div class="reveal">
-      <h2 id="about"><span class="pen">✎</span>about</h2>
-      <div class="prose note">
-        <p>Hi, I'm Ridhwan. I build and maintain software, ranging from small
-        automation scripts to full applications. This little site is my notebook:
-        a page that starts out nearly blank and fills up as more gets shipped.</p>
-        <p>I like the part where a messy problem turns into a clean line of code,
-        and the quiet satisfaction of a script that just runs. Most of what I
-        make lives over on
-        <a href="https://github.com/riddyridz" target="_blank" rel="noopener">GitHub</a>;
-        the notes about it end up here.</p>
+  <section id="experience" class="reveal">
+    <div class="sec-label">02 · experience</div>
+    <h2 class="sec-title">Where I've been</h2>
+    <div class="timeline">
+      <div class="t-item">
+        <div class="when">current</div>
+        <h3>Head of Digital &amp; Technology · <span class="org">Darul Ihsaan</span></h3>
+        <p>Leading the digital and technology function: strategy, platforms,
+        and the engineering behind them.</p>
+      </div>
+      <div class="t-item">
+        <div class="when">current</div>
+        <h3>Digital Experience Officer · <span class="org">City St George's, University of London</span></h3>
+        <p>Shaping how students and staff experience the university's digital
+        estate, from the front end inwards.</p>
+      </div>
+      <div class="t-item">
+        <div class="when">placement year</div>
+        <h3>Digital · <span class="org">GlaxoSmithKline</span></h3>
+        <p>A year in industry with GSK's digital team, embedded in a global
+        organisation while completing my UCL degree.</p>
       </div>
     </div>
+  </section>
 
-    <div class="reveal">
-      <h2 id="whatido"><span class="pen">✎</span>what I do</h2>
-      <div class="cards">
-        <div class="card">
-          <div class="icon">⌨️</div>
-          <h3>web development</h3>
-          <p>Building things for the web with JavaScript, TypeScript and Node.js,
-          from tiny pages like this one to full applications.</p>
-        </div>
-        <div class="card">
-          <div class="icon">⚙️</div>
-          <h3>automation</h3>
-          <p>Python and shell scripts that take a boring, repetitive job
-          and make it a one-liner. My favourite kind of magic.</p>
-        </div>
-        <div class="card">
-          <div class="icon">☁️</div>
-          <h3>shipping</h3>
-          <p>Getting things deployed and keeping them running.
-          Git, GitHub and Cloudflare do the heavy lifting.</p>
-        </div>
+  <section id="education" class="reveal">
+    <div class="sec-label">03 · education &amp; awards</div>
+    <h2 class="sec-title">The foundations</h2>
+    <div class="duo">
+      <div class="card">
+        <div class="edu-degree">UCL — University College London</div>
+        <p style="margin-top:6px">BSc Information Management for Business · 2017–2021</p>
+        <span class="edu-grade">First Class Honours</span>
+        <p style="margin-top:14px">Software engineering, database systems, web
+        technologies, business analytics and the ethics of AI — plus a year of
+        corporate experience at GlaxoSmithKline in Digital.</p>
+      </div>
+      <div class="card">
+        <ul class="awards">
+          <li><span class="medal">🏆</span>How To Change The World — Transport Winners</li>
+          <li><span class="medal">🥈</span>UCL Apprentice 2018 — Runner-up</li>
+          <li><span class="medal">🏅</span>IT Student of the Year — 2017</li>
+          <li><span class="medal">🏅</span>IT Student of the Year — 2016</li>
+        </ul>
       </div>
     </div>
+  </section>
 
-    <div class="reveal">
-      <h2 id="skills"><span class="pen">✎</span>my tech stack &amp; tools</h2>
-      <div class="stickers">
-        <div class="sticker"><div class="disc">JS</div><div class="name">JavaScript</div></div>
-        <div class="sticker"><div class="disc">TS</div><div class="name">TypeScript</div></div>
-        <div class="sticker"><div class="disc">PY</div><div class="name">Python</div></div>
-        <div class="sticker"><div class="disc">SH</div><div class="name">Shell</div></div>
-        <div class="sticker"><div class="disc">&gt;_</div><div class="name">Node.js</div></div>
-        <div class="sticker"><div class="disc">GH</div><div class="name">GitHub</div></div>
-        <div class="sticker"><div class="disc">CF</div><div class="name">Cloudflare</div></div>
-      </div>
+  <section id="skills" class="reveal">
+    <div class="sec-label">04 · skills</div>
+    <h2 class="sec-title">Tools of the trade</h2>
+    <div class="chips">
+      <span class="chip">JavaScript</span>
+      <span class="chip">TypeScript</span>
+      <span class="chip">React</span>
+      <span class="chip">HTML</span>
+      <span class="chip">CSS</span>
+      <span class="chip">Node.js</span>
+      <span class="chip">Python</span>
+      <span class="chip">Git &amp; GitHub</span>
+      <span class="chip">Cloudflare</span>
+      <span class="chip">UX &amp; Digital Experience</span>
     </div>
+  </section>
 
-    <div class="reveal">
-      <h2 id="projects"><span class="pen">✎</span>things I've built</h2>
-      <div class="project">
-        <h3><a href="https://github.com/riddyridz/riddyridz.github.io" target="_blank" rel="noopener">this notebook ↗</a></h3>
-        <p>The page you're reading: a single hand-styled HTML file served from
-        GitHub Pages at ridhwan.is-a.dev. No frameworks, just paper and ink.</p>
-        <div class="tags">
-          <span class="pill tilt-1">HTML</span><span class="pill tilt-2">CSS</span><span class="pill hot tilt-3">GitHub Pages</span>
-        </div>
-      </div>
-      <div class="project-empty">( next project gets pinned here — the glue is still drying ✎ )</div>
+  <section id="writing" class="reveal">
+    <div class="sec-label">05 · writing</div>
+    <h2 class="sec-title">Notes I've published</h2>
+    <a class="card post" href="https://www.linkedin.com/pulse/5-common-remote-working-mistakes-syed-ridhwanul-haque-" target="_blank" rel="noopener">
+      <span class="date">Sep 2020 · LinkedIn</span>
+      <h3>5 Common Remote Working Mistakes ↗</h3>
+      <p>What a year of working differently taught me about doing remote work well.</p>
+    </a>
+  </section>
+
+  <section id="contact" class="contact reveal">
+    <div class="sec-label">06 · contact</div>
+    <h2 class="big" style="margin-top:6px">Let's <span class="grad">build something</span>.</h2>
+    <p>Feel free to reach out — or grab a coffee with me in London.</p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="https://www.linkedin.com/in/ridhwanhaque/" target="_blank" rel="noopener">Say hello on LinkedIn ↗</a>
+      <a class="btn btn-ghost" href="https://github.com/riddyridz" target="_blank" rel="noopener">@riddyridz on GitHub ↗</a>
     </div>
+  </section>
 
-    <div class="reveal">
-      <div class="sticky-note" id="contact">
-        say hello → <a href="https://github.com/riddyridz" target="_blank" rel="noopener" style="font-weight:700">@riddyridz</a> on GitHub ✎
-      </div>
-    </div>
+</div>
 
-    <div class="end-of-page">~ end of page ~</div>
-  </article>
-</main>
+<footer>
+  ridhwan.is-a.dev · hand-built, zero frameworks · <a href="https://github.com/riddyridz/riddyridz.github.io" target="_blank" rel="noopener">source</a>
+</footer>
 
 <script>
-  // floating nav appears after scrolling past the hero
-  const nav = document.getElementById('floatNav');
-  addEventListener('scroll', () => {
-    nav.classList.toggle('visible', scrollY > 420);
-  }, { passive: true });
+(function () {
+  const canvas = document.getElementById('particles');
+  const ctx = canvas.getContext('2d');
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // scroll reveal
-  const io = new IntersectionObserver((entries) => {
-    for (const e of entries) {
-      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+  let W, H, dpr, particles;
+  const mouse = { x: -9999, y: -9999 };
+  const LINK_DIST = 130;
+  const MOUSE_DIST = 170;
+
+  function size() {
+    dpr = Math.min(devicePixelRatio || 1, 2);
+    W = innerWidth; H = innerHeight;
+    canvas.width = W * dpr; canvas.height = H * dpr;
+    canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    spawn();
+  }
+
+  function spawn() {
+    const count = Math.min(140, Math.round((W * H) / 14000));
+    particles = Array.from({ length: count }, () => ({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      vx: (Math.random() - 0.5) * 0.35,
+      vy: (Math.random() - 0.5) * 0.35,
+      r: 1 + Math.random() * 1.6,
+      hue: Math.random() < 0.6 ? 187 : (Math.random() < 0.5 ? 258 : 322)
+    }));
+  }
+
+  function step() {
+    ctx.clearRect(0, 0, W, H);
+
+    for (const p of particles) {
+      // gentle cursor repulsion
+      const dx = p.x - mouse.x, dy = p.y - mouse.y;
+      const md = Math.hypot(dx, dy);
+      if (md < MOUSE_DIST && md > 0.01) {
+        const f = (1 - md / MOUSE_DIST) * 0.6;
+        p.vx += (dx / md) * f * 0.35;
+        p.vy += (dy / md) * f * 0.35;
+      }
+      // damping + drift
+      p.vx = Math.max(-0.9, Math.min(0.9, p.vx * 0.985));
+      p.vy = Math.max(-0.9, Math.min(0.9, p.vy * 0.985));
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < -20) p.x = W + 20; else if (p.x > W + 20) p.x = -20;
+      if (p.y < -20) p.y = H + 20; else if (p.y > H + 20) p.y = -20;
     }
-  }, { rootMargin: '0px 0px -40px 0px' });
-  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+    // links between particles
+    for (let i = 0; i < particles.length; i++) {
+      const a = particles[i];
+      for (let j = i + 1; j < particles.length; j++) {
+        const b = particles[j];
+        const dx = a.x - b.x, dy = a.y - b.y;
+        if (Math.abs(dx) > LINK_DIST || Math.abs(dy) > LINK_DIST) continue;
+        const d = Math.hypot(dx, dy);
+        if (d < LINK_DIST) {
+          const alpha = (1 - d / LINK_DIST) * 0.14;
+          ctx.strokeStyle = `hsla(${(a.hue + b.hue) / 2}, 85%, 70%, ${alpha})`;
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
+          ctx.stroke();
+        }
+      }
+      // link to cursor
+      const dmx = a.x - mouse.x, dmy = a.y - mouse.y;
+      const dm = Math.hypot(dmx, dmy);
+      if (dm < MOUSE_DIST) {
+        const alpha = (1 - dm / MOUSE_DIST) * 0.35;
+        ctx.strokeStyle = `hsla(${a.hue}, 90%, 72%, ${alpha})`;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(a.x, a.y);
+        ctx.lineTo(mouse.x, mouse.y);
+        ctx.stroke();
+      }
+      // dot
+      ctx.fillStyle = `hsla(${a.hue}, 90%, 72%, 0.75)`;
+      ctx.beginPath();
+      ctx.arc(a.x, a.y, a.r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  let raf;
+  function loop() { step(); raf = requestAnimationFrame(loop); }
+
+  size();
+  addEventListener('resize', size);
+  addEventListener('pointermove', e => { mouse.x = e.clientX; mouse.y = e.clientY; }, { passive: true });
+  addEventListener('pointerleave', () => { mouse.x = -9999; mouse.y = -9999; });
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) cancelAnimationFrame(raf); else if (!reduced) loop();
+  });
+
+  if (reduced) { step(); } else { loop(); }
+})();
+
+// scroll reveal
+const io = new IntersectionObserver((entries) => {
+  for (const e of entries) {
+    if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+  }
+}, { rootMargin: '0px 0px -60px 0px' });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 </script>
 </body>
 </html>
