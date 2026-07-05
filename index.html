@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ridhwan Haque — Front-End Developer &amp; UI/UX Designer</title>
-<meta name="description" content="Ridhwan Haque — Front-End Developer &amp; UI/UX Designer. Head of Digital &amp; Technology at Darul Ihsaan, Digital Experience Officer at City St George's, University of London. UCL Information Management for Business, First Class.">
+<meta name="description" content="Ridhwan Haque — Front-End Developer &amp; UI/UX Designer, East London, UK. Currently open to work, including web content roles. Digital Experience Officer at City St George's, University of London. CMS: WordPress, Squiz Matrix, Umbraco, AEM, Drupal.">
 <meta name="author" content="Syed Ridhwanul Haque">
 <meta property="og:title" content="Ridhwan Haque — Front-End Developer &amp; UI/UX Designer">
 <meta property="og:description" content="Front-End Developer &amp; UI/UX Designer · Head of Digital &amp; Technology at Darul Ihsaan · Digital Experience Officer at City St George's, University of London.">
@@ -126,6 +126,39 @@
     text-align: center;
     padding: 96px 0 48px;
   }
+  .avail {
+    display: inline-flex; align-items: center; gap: 9px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #4ade80;
+    text-decoration: none;
+    background: rgba(74, 222, 128, 0.08);
+    border: 1px solid rgba(74, 222, 128, 0.35);
+    border-radius: 999px;
+    padding: 8px 18px;
+    margin-bottom: 22px;
+    backdrop-filter: blur(8px);
+    transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+  }
+  .avail:hover {
+    transform: translateY(-2px);
+    border-color: rgba(74, 222, 128, 0.7);
+    box-shadow: 0 8px 30px -10px rgba(74, 222, 128, 0.45);
+  }
+  .avail .pulse {
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    background: #4ade80;
+    box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.6);
+    animation: pulse 2s ease-out infinite;
+  }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.6); }
+    70% { box-shadow: 0 0 0 9px rgba(74, 222, 128, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); }
+  }
+  @media (prefers-reduced-motion: reduce) { .avail .pulse { animation: none; } }
+
   .eyebrow {
     font-family: var(--mono);
     font-size: 14px;
@@ -353,6 +386,20 @@
   .cert-badge.apm { color: #6f2c91; font-size: 12.5px; }
   .cert-badge.circl { color: #ff5a5f; font-size: 22px; }
   .cert-badge.a11y { background: #0a66c2; font-size: 22px; }
+  .cert-badge.wp { color: #21759b; font-size: 24px; font-family: Georgia, serif; }
+  .cert-badge.squiz { color: #d81b60; font-size: 17px; }
+  .cert-badge.umbraco { color: #3544b1; font-size: 24px; }
+  .cert-badge.aem { color: #fa0f00; font-size: 18px; }
+  .cert-badge.crownpeak { color: #6f42c1; font-size: 17px; }
+  .cms-intro {
+    color: var(--muted);
+    font-weight: 300;
+    font-size: 16px;
+    max-width: 620px;
+    margin-bottom: 4px;
+  }
+  .cms-grid { margin-top: 14px; }
+  @media (min-width: 960px) { .cms-grid { grid-template-columns: 1fr 1fr 1fr; } }
   .cert-name { font-size: 14px; font-weight: 600; line-height: 1.35; }
   .cert-meta { font-family: var(--mono); font-size: 11.5px; color: var(--muted); margin-top: 3px; }
 
@@ -538,13 +585,16 @@
 <div class="wrap">
 
   <header class="hero" id="top">
+    <a class="avail" href="#contact"><span class="pulse" aria-hidden="true"></span>
+      currently looking for work · UK-based, East London</a>
     <div class="eyebrow">front-end developer · ui/ux designer</div>
     <h1>Ridhwan <span class="grad">Haque</span></h1>
     <p class="roles">
       Digital Experience Officer at <strong>City St George's, University of London</strong> ·
-      volunteer Head of Digital &amp; Technology at <strong>Darul Ihsaan</strong>
+      volunteer Head of Digital &amp; Technology at <strong>Darul Ihsaan</strong> ·
+      happy to take on web content work and content page updates
     </p>
-    <div class="loc">📍 London, United Kingdom</div>
+    <div class="loc">📍 East London · United Kingdom</div>
     <div class="cta-row">
       <a class="btn btn-primary" href="https://www.linkedin.com/in/ridhwanhaque/" target="_blank" rel="noopener">LinkedIn ↗</a>
       <a class="btn btn-ghost" href="mailto:syed.r.haque@outlook.com">Email ✉</a>
@@ -571,13 +621,16 @@
         the global web estate; a platform I co-founded; freelance design work
         for community organisations; and a First Class BSc in Information
         Management for Business at <strong>UCL</strong>.</p>
-        <p>Feel free to reach out or grab a coffee with me — I'm open to
-        collaboration opportunities.</p>
+        <p>I'm currently looking for my next role — and alongside full builds
+        I'm just as happy doing hands-on web content work: updating pages,
+        restructuring sections, and keeping a site's content accurate and
+        accessible. Feel free to reach out or grab a coffee with me in London.</p>
       </div>
       <div class="card">
         <ul class="fact-list">
-          <li><span class="k">base</span><span class="v">London, UK</span></li>
+          <li><span class="k">base</span><span class="v">East London, UK</span></li>
           <li><span class="k">focus</span><span class="v">front-end · ui/ux design · accessibility</span></li>
+          <li><span class="k">also open to</span><span class="v">web content work &amp; content page updates</span></li>
           <li><span class="k">degree</span><span class="v">BSc Information Management for Business, UCL — First Class</span></li>
           <li><span class="k">languages</span><span class="v">English · Bengali · Arabic</span></li>
           <li><span class="k">type</span><span class="v">INFP — "The Mediator"</span></li>
@@ -718,18 +771,46 @@
   <section id="skills" class="reveal">
     <div class="sec-label">05 · skills</div>
     <h2 class="sec-title">Tools of the trade</h2>
-    <div class="chips">
+
+    <p class="cms-intro">CMS platforms I've shipped real work on — from single
+    pages to global estates. Content updates, migrations, restructures, and
+    day-to-day page maintenance all welcome:</p>
+    <div class="certs cms-grid">
+      <div class="cert">
+        <span class="cert-badge wp">W</span>
+        <div><div class="cert-name">WordPress</div><div class="cert-meta">University + freelance builds</div></div>
+      </div>
+      <div class="cert">
+        <span class="cert-badge squiz">Sq</span>
+        <div><div class="cert-name">Squiz (Matrix)</div><div class="cert-meta">City St George's, UoL</div></div>
+      </div>
+      <div class="cert">
+        <span class="cert-badge umbraco">U</span>
+        <div><div class="cert-name">Umbraco</div><div class="cert-meta">GSK global web estate</div></div>
+      </div>
+      <div class="cert">
+        <span class="cert-badge aem">Ae</span>
+        <div><div class="cert-name">AEM</div><div class="cert-meta">Adobe Experience Manager</div></div>
+      </div>
+      <div class="cert">
+        <span class="cert-badge">
+          <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path fill="#0678BE" d="M12 1.5c.6 2.7 2.4 4.5 4.3 6.4 2.4 2.4 4.7 5 4.7 8.3A9 9 0 0 1 12 25a9 9 0 0 1-9-8.8c0-3.3 2.3-5.9 4.7-8.3C9.6 6 11.4 4.2 12 1.5z" transform="translate(0 -1.3)"/></svg>
+        </span>
+        <div><div class="cert-name">Drupal</div><div class="cert-meta">Certified 2025</div></div>
+      </div>
+      <div class="cert">
+        <span class="cert-badge crownpeak">Cp</span>
+        <div><div class="cert-name">CrownPeak</div><div class="cert-meta">GSK content delivery</div></div>
+      </div>
+    </div>
+
+    <div class="chips" style="margin-top:26px">
       <span class="chip">JavaScript</span>
       <span class="chip">TypeScript</span>
       <span class="chip">React</span>
       <span class="chip">HTML</span>
       <span class="chip">CSS</span>
       <span class="chip">Node.js</span>
-      <span class="chip">WordPress</span>
-      <span class="chip">Squiz</span>
-      <span class="chip">Umbraco</span>
-      <span class="chip">AEM</span>
-      <span class="chip">Drupal</span>
       <span class="chip">SEO</span>
       <span class="chip">Google Analytics 4</span>
       <span class="chip">Tag Manager</span>
