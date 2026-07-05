@@ -12,7 +12,7 @@
 <meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Lexend:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg: #060a13;
@@ -128,41 +128,32 @@
   }
   .avail {
     display: inline-flex; align-items: center; gap: 9px;
-    font-size: 14px;
-    font-weight: 600;
-    color: #4ade80;
+    font-family: "Lexend", var(--sans);
+    font-size: 13.5px;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+    color: var(--fg);
     text-decoration: none;
-    background: rgba(74, 222, 128, 0.08);
-    border: 1px solid rgba(74, 222, 128, 0.35);
+    background: var(--card);
+    border: 1px solid var(--card-border);
     border-radius: 999px;
     padding: 8px 18px;
     margin-bottom: 22px;
     backdrop-filter: blur(8px);
-    transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+    transition: transform 0.2s, border-color 0.2s;
   }
-  .avail:hover {
-    transform: translateY(-2px);
-    border-color: rgba(74, 222, 128, 0.7);
-    box-shadow: 0 8px 30px -10px rgba(74, 222, 128, 0.45);
-  }
-  .avail .pulse {
-    width: 9px; height: 9px;
+  .avail:hover { transform: translateY(-2px); border-color: rgba(34, 211, 238, 0.4); }
+  .avail .dot {
+    width: 7px; height: 7px;
     border-radius: 50%;
-    background: #4ade80;
-    box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.6);
-    animation: pulse 2s ease-out infinite;
+    background: #34d399;
   }
-  @keyframes pulse {
-    0% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.6); }
-    70% { box-shadow: 0 0 0 9px rgba(74, 222, 128, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); }
-  }
-  @media (prefers-reduced-motion: reduce) { .avail .pulse { animation: none; } }
 
   .eyebrow {
-    font-family: var(--mono);
+    font-family: "Lexend", var(--sans);
     font-size: 14px;
-    letter-spacing: 0.22em;
+    font-weight: 600;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--cyan);
     margin-bottom: 18px;
@@ -227,9 +218,10 @@
   /* ---------- sections ---------- */
   section { padding: 72px 0; }
   .sec-label {
-    font-family: var(--mono);
+    font-family: "Lexend", var(--sans);
     font-size: 13px;
-    letter-spacing: 0.2em;
+    font-weight: 600;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--cyan);
   }
@@ -458,7 +450,8 @@
   .sheet.open a:nth-child(5) { transition-delay: 0.16s; }
   .sheet.open a:nth-child(6) { transition-delay: 0.2s; }
   .sheet a .num {
-    font-family: var(--mono);
+    font-family: "Lexend", var(--sans);
+    font-weight: 600;
     font-size: 13px;
     color: var(--cyan);
   }
@@ -585,8 +578,8 @@
 <div class="wrap">
 
   <header class="hero" id="top">
-    <a class="avail" href="#contact"><span class="pulse" aria-hidden="true"></span>
-      currently looking for work · UK-based, East London</a>
+    <a class="avail" href="#contact"><span class="dot" aria-hidden="true"></span>
+      Currently looking for permanent work</a>
     <div class="eyebrow">front-end developer · ui/ux designer</div>
     <h1>Ridhwan <span class="grad">Haque</span></h1>
     <p class="roles">
