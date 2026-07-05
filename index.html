@@ -320,16 +320,6 @@
     color: var(--cyan);
   }
 
-  /* ---------- writing ---------- */
-  .post {
-    display: block;
-    text-decoration: none;
-  }
-  .post .date { font-family: var(--mono); font-size: 12.5px; color: var(--muted); }
-  .post h3 { font-size: 20px; font-weight: 600; margin-top: 4px; }
-  .post:hover h3 { color: var(--cyan); }
-  .post p { margin-top: 6px; }
-
   /* ---------- contact ---------- */
   .contact { text-align: center; padding-bottom: 40px; }
   .contact .big {
@@ -357,16 +347,61 @@
   footer a { color: var(--cyan); text-decoration: none; }
 
   /* ---------- mobile-dedicated experience ---------- */
-  .mobile-cta { display: none; }
+  .mobile-cta, .menu-btn { display: none; }
+  .sheet {
+    position: fixed; inset: 0; z-index: 70;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 6px;
+    background: rgba(6, 10, 19, 0.9);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    opacity: 0; visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s;
+  }
+  .sheet.open { opacity: 1; visibility: visible; }
+  .sheet a {
+    display: flex; align-items: baseline; gap: 14px;
+    text-decoration: none;
+    padding: 12px 20px;
+    transform: translateY(14px);
+    opacity: 0;
+    transition: transform 0.35s ease, opacity 0.35s ease;
+  }
+  .sheet.open a { transform: translateY(0); opacity: 1; }
+  .sheet.open a:nth-child(2) { transition-delay: 0.04s; }
+  .sheet.open a:nth-child(3) { transition-delay: 0.08s; }
+  .sheet.open a:nth-child(4) { transition-delay: 0.12s; }
+  .sheet.open a:nth-child(5) { transition-delay: 0.16s; }
+  .sheet.open a:nth-child(6) { transition-delay: 0.2s; }
+  .sheet a .num {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--cyan);
+  }
+  .sheet a .label {
+    font-size: 27px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--fg);
+  }
+  .sheet a:active .label { color: var(--cyan); }
+  .sheet .close {
+    position: absolute;
+    top: calc(18px + env(safe-area-inset-top));
+    right: 22px;
+    font-size: 30px;
+    font-weight: 300;
+    color: var(--muted);
+    background: none; border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+  }
+  body.sheet-locked { overflow: hidden; }
+
   @media (max-width: 720px) {
-    .nav {
-      max-width: 94vw;
-      overflow-x: auto;
-      scrollbar-width: none;
-      -webkit-overflow-scrolling: touch;
-    }
-    .nav::-webkit-scrollbar { display: none; }
-    .hero { padding-top: 84px; min-height: 92svh; }
+    .nav { display: none; } /* the dock + sheet replace the top pill on mobile */
+    .hero { padding-top: 40px; min-height: 92svh; }
     section { padding: 54px 0; }
     .card { padding: 20px 18px; }
     .t-item { padding-left: 26px; }
@@ -375,19 +410,51 @@
       left: 12px; right: 12px;
       bottom: calc(10px + env(safe-area-inset-bottom));
       z-index: 60;
-      display: flex; gap: 10px;
+      display: flex; gap: 8px;
       background: rgba(10, 16, 29, 0.82);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
       border: 1px solid var(--card-border);
       border-radius: 18px;
-      padding: 10px;
+      padding: 8px;
       box-shadow: 0 12px 40px rgba(0, 0, 0, 0.55);
     }
     .mobile-cta .btn { flex: 1; justify-content: center; padding: 12px 8px; font-size: 14.5px; }
+    .menu-btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      flex: 0 0 48px;
+      font-size: 19px;
+      color: var(--fg);
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      cursor: pointer;
+      padding: 0;
+    }
     .contact .cta-row { display: none; } /* the dock is the contact CTA on mobile */
-    footer { padding-bottom: 104px; }
+    footer {
+      padding: 34px 20px calc(112px + env(safe-area-inset-bottom));
+      font-size: 13px;
+      line-height: 2;
+    }
+    footer .top-link { margin-bottom: 14px; }
   }
+
+  /* ---------- footer ---------- */
+  footer .top-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    color: var(--fg);
+    text-decoration: none;
+    font-family: var(--sans);
+    font-size: 13.5px;
+    border: 1px solid var(--card-border);
+    background: var(--card);
+    border-radius: 999px;
+    padding: 8px 18px;
+    margin-bottom: 16px;
+    transition: transform 0.2s, border-color 0.2s;
+  }
+  footer .top-link:hover { transform: translateY(-2px); border-color: var(--cyan); }
 
   /* ---------- rocket easter egg ---------- */
   #rocket {
@@ -648,18 +715,8 @@
     </div>
   </section>
 
-  <section id="writing" class="reveal">
-    <div class="sec-label">06 · writing</div>
-    <h2 class="sec-title">Notes I've published</h2>
-    <a class="card post" href="https://www.linkedin.com/pulse/5-common-remote-working-mistakes-syed-ridhwanul-haque-" target="_blank" rel="noopener">
-      <span class="date">Sep 2020 · LinkedIn</span>
-      <h3>5 Common Remote Working Mistakes ↗</h3>
-      <p>What a year of working differently taught me about doing remote work well.</p>
-    </a>
-  </section>
-
   <section id="contact" class="contact reveal">
-    <div class="sec-label">07 · contact</div>
+    <div class="sec-label">06 · contact</div>
     <h2 class="big" style="margin-top:6px">Let's <span class="grad">build something</span>.</h2>
     <p>Feel free to reach out — or grab a coffee with me in London.</p>
     <div class="cta-row">
@@ -670,12 +727,24 @@
 
 </div>
 
+<div class="sheet" id="sheet" aria-hidden="true">
+  <button class="close" id="sheetClose" aria-label="close menu">✕</button>
+  <a href="#about"><span class="num">01</span><span class="label">about</span></a>
+  <a href="#experience"><span class="num">02</span><span class="label">experience</span></a>
+  <a href="#education"><span class="num">03</span><span class="label">education</span></a>
+  <a href="#strengths"><span class="num">04</span><span class="label">strengths</span></a>
+  <a href="#skills"><span class="num">05</span><span class="label">skills</span></a>
+  <a href="#contact"><span class="num">06</span><span class="label">contact</span></a>
+</div>
+
 <nav class="mobile-cta" aria-label="quick actions">
+  <button class="menu-btn" id="menuBtn" aria-label="open menu" aria-expanded="false">☰</button>
   <a class="btn btn-primary" href="mailto:syed.r.haque@outlook.com">Email ✉</a>
   <a class="btn btn-ghost" href="https://www.linkedin.com/in/ridhwanhaque/" target="_blank" rel="noopener">LinkedIn ↗</a>
 </nav>
 
 <footer>
+  <a class="top-link" href="#top">↑ back to top</a><br>
   ridhwan.is-a.dev · hand-built, zero frameworks<br>
   <span style="opacity:0.65" id="rocketHint">psst — arrow keys steer the rocket, spacebar for jet fuel 🚀</span>
 </footer>
@@ -886,6 +955,24 @@
   });
 
   if (reduced) { step(); } else { loop(); }
+})();
+
+// mobile menu sheet
+(function () {
+  const sheet = document.getElementById('sheet');
+  const btn = document.getElementById('menuBtn');
+  const close = document.getElementById('sheetClose');
+  if (!sheet || !btn) return;
+  function setOpen(open) {
+    sheet.classList.toggle('open', open);
+    sheet.setAttribute('aria-hidden', String(!open));
+    btn.setAttribute('aria-expanded', String(open));
+    document.body.classList.toggle('sheet-locked', open);
+  }
+  btn.addEventListener('click', () => setOpen(!sheet.classList.contains('open')));
+  close.addEventListener('click', () => setOpen(false));
+  sheet.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setOpen(false)));
+  addEventListener('keydown', (e) => { if (e.key === 'Escape') setOpen(false); });
 })();
 
 // scroll reveal
